@@ -1,0 +1,48 @@
+//
+//  nav.scss
+//  boilerplate
+// 
+//  Created by Wess Cope (me@wess.io) on 05/11/20
+//  Copyright 2020 Wess Cope
+//
+
+#main-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  
+  border-right: 1px solid rgba(0, 0, 0, 0.9);
+  background: #1f1f1f;
+  color: #fff;
+  text-align: center;
+
+  margin-left: 0;
+  .option {
+    $highlight: #8bc34a;
+
+    display:flex;
+    
+    margin-left: 0;
+
+    padding: {
+      top:    14px;
+      right:  16px;
+      bottom: 14px;
+      left:   16px;
+    }
+
+    &.current {
+      border-left:  2px solid $highlight;
+      color: $highlight;
+      padding-left: 14px;
+    }
+
+    color: rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      color: #fff;
+    }
+
+  }  
+}

@@ -1,0 +1,6 @@
+.DS_Store
+.cache
+.envrc
+.vscode
+node_modules
+dist
