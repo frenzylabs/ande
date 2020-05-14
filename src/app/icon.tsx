@@ -43,7 +43,13 @@ enum Icon {
   times       = "fas times",
   asterisk    = "fas asterisk",
   terminal    = "fas terminal",
-  stream      = "fas stream"
+  stream      = "fas stream",
+  save        = "fas save",
+  windowClose = "fas window-close",
+  filePlus    = "fal file-plus",
+  folderPlus  = "fal folder-plus",
+  sync        = "fal sync",
+  question    = "fal question"
 }
 
 export class IconComponent extends React.Component<any, null> {

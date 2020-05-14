@@ -10,12 +10,6 @@ const remote  = window.require('electron').remote
 const path    = remote.require('path')
 const fs      = remote.require('fs-extra')
 
-export interface FileObject {
-  type: 'directory' | 'file',
-  path:string
-  children:Array<string>
-}
-
 export default {
   fs, path
 }

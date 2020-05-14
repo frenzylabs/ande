@@ -104,7 +104,7 @@ const reducer:Reducer = (state:State = initialState, action:ActionType):State =>
         macros: action.payload || []
       }
 
-    default: return state
+      default: return state
   }
 }
 

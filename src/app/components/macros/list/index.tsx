@@ -9,47 +9,43 @@
 import React      from 'react'
 import {connect}  from 'react-redux'
 import Component  from '../../../types/component'
-import Provider   from '../provider'
 
-import {Tree} from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import {
+  Tree,
+  Input
+} from 'antd'
+
+import { 
+  DownOutlined ,
+  FileTextOutlined
+} from '@ant-design/icons'
 
 import Toolbar from './toolbar'
 
 class MacroList extends Component {
 
+  input = null
+
   state = {
-    expanded: []
+    newName: ""
   }
 
   constructor(props:any) {
     super(props)
 
-    this.toggleParent = this.toggleParent.bind(this)
-    this.onSelect     = this.onSelect.bind(this)
-    this.onExpand     = this.onExpand.bind(this)
+    this.refresh          = this.refresh.bind(this)
+    this.onSelect         = this.onSelect.bind(this)
+    this.inputKeyHandler  = this.inputKeyHandler.bind(this)
+    this.enter            = this.enter.bind(this)
+    this.esc              = this.esc.bind(this)
   }
 
-  toggleParent(node) {
-    if(node.expanded) {
-      this.setState({
-        expanded: this.state.expanded.filter(key => key != node.key)
-      })
-    } else if(!this.state.expanded.includes(node.key)) {
-      this.setState({
-        expanded:  this.state.expanded.concat([node.key])
-      })
-    }
+  refresh() {
+    this.props.provider.load()
   }
 
   onSelect(keys, info) {
     const {node} = info
-
-    if(!node.isLeaf) {
-      this.toggleParent(node)
-
-      return
-    }
 
     if(!this.props.didSelect) { return }
 
@@ -59,18 +55,32 @@ class MacroList extends Component {
     })
   }
 
-  onExpand(keys, info) {
-    const {node} = info
+  enter(e) {
+    if(!this.props.create || this.state.newName.length < 1) { return }
 
-    if(!node.isLeaf) {
-      this.toggleParent(node)
-      
-      return
+    this.props.create(this.state.newName)
+  }
+
+  esc(e) {
+    this.props.toggleNewFile(false)
+  }
+
+  inputKeyHandler(e) {
+    switch(e.keyCode) {
+      case 27:
+        this.esc(e)
+        return
+
+      case 13:  //Enter
+        this.enter(e)
+        return
+
+      default: return
     }
   }
 
   componentDidMount() {
-    this.props.provider.load()
+    this.refresh()
   }
 
   componentDidUpdate(prevProps, _) {
@@ -78,29 +88,55 @@ class MacroList extends Component {
     const prev    = prevProps.macros  || []
 
     if(prev.length != current.length) {
-      this.props.provider.load()
+      this.refresh()
     }
+
+    if(this.props.showNew) {
+      this.input.focus()
+    }
+  }
+
+  renderNewFile() {
+    return (
+      <div id="new-macro-form">
+        <Input 
+          onKeyUp={this.inputKeyHandler}
+          ref={(ele) => this.input = ele}
+          size="small" 
+          prefix={<FileTextOutlined style={{color: 'rgba(0, 0, 0, 0.4)'}} />}
+          value={this.state.newName}
+          onChange={(e) => this.setState({newName: e.currentTarget.value})}
+        />
+      </div>
+    )
   }
 
   render() {
     return (
       <section id="macro-list">
-        <h3>Macros</h3>
+        <Toolbar refresh={this.refresh} create={() => this.props.toggleNewFile(true)}/>
+
         <div id="macro-files">
           <Tree
             showLine
             blockNode
             switcherIcon={<DownOutlined />}
-            expandedKeys={this.state.expanded}
             treeData={this.props.macros}
             onSelect={this.onSelect}
-            onExpand={this.onExpand}
           >
           </Tree>
+
+          {this.props.showNew && this.renderNewFile()}
         </div>
       </section>
     )
   }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      newName: nextProps.showNew ? prevState.newName : ""
+    }
+   }
 }
 
 const mapStateToProps = (state) => {

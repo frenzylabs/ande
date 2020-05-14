@@ -9,18 +9,18 @@
 import {ConnectionStatus} from '../../connection'
 
 export enum ActionIdentifier {
-  LIST        = "ACTION.LIST",
-  CONNECT     = "ACTION.CONNECT",
-  CONNECTED   = "ACTION.CONNECTED",
-  DISCONNECT  = "ACTION.DISCONNECT",
-  SEND        = "ACTION.SEND",
-  SENT        = "ACTION.SENT",
-  RECEIVED    = "ACTION.RECEIVED",
-  PORT        = "ACTION.PORT",
-  BAUD        = "ACTION.BAUD",
-  CLEAR       = "ACTION.CLEAR",
-  CONTROLS    = "ACTION.CONTROLS",
-  LOAD_MACROS = "ACTION.LOAD_MACROS"
+  LIST          = "ACTION.LIST",
+  CONNECT       = "ACTION.CONNECT",
+  CONNECTED     = "ACTION.CONNECTED",
+  DISCONNECT    = "ACTION.DISCONNECT",
+  SEND          = "ACTION.SEND",
+  SENT          = "ACTION.SENT",
+  RECEIVED      = "ACTION.RECEIVED",
+  PORT          = "ACTION.PORT",
+  BAUD          = "ACTION.BAUD",
+  CLEAR         = "ACTION.CLEAR",
+  CONTROLS      = "ACTION.CONTROLS",
+  LOAD_MACROS   = "ACTION.LOAD_MACROS",
 }
 
 export interface ListAction {

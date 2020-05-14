@@ -24,8 +24,9 @@ import {
   Breadcrumb
 } from 'antd'
 
-export default class extends Component {
+import Icon, {IconComponent} from '../../../icon'
 
+export default class extends Component {
   constructor(props:any) {
     super(props)
 
@@ -34,6 +35,8 @@ export default class extends Component {
     this.renderContextMenu  = this.renderContextMenu.bind(this)
     this.renderLineNumber   = this.renderLineNumber.bind(this)
     this.renderBreadcrumb   = this.renderBreadcrumb.bind(this)
+    this.renderControls     = this.renderControls.bind(this)
+    this.renderToolbar      = this.renderToolbar.bind(this)
     this.highlight          = this.highlight.bind(this)
   }
 
@@ -93,8 +96,6 @@ export default class extends Component {
   }
 
   renderBreadcrumb() {
-    if(!this.props.file) { return }
-
     const crumbs = ['macros'].concat(
       (this.props.file.split('macros')[1]).split('/').filter(item => item.length > 0)
     ).map((item, index) => (
@@ -102,25 +103,48 @@ export default class extends Component {
     ))
 
     return (
-      <Breadcrumb separator=">">
-        {crumbs}
-      </Breadcrumb>
+      <div id="macro-file-path">
+        <Breadcrumb separator=">">
+          {crumbs}
+        </Breadcrumb>
+      </div>
+    )
+  }
+
+  renderControls() {
+    return (
+      <div id="macro-file-controls">
+        <a onClick={this.props.save}><IconComponent icon={Icon.save}/></a>
+        <a onClick={this.props.delete}><IconComponent icon={Icon.trash}/></a>
+      </div>
+    )
+  }
+
+  renderToolbar() {
+    if(!this.props.file) { return }
+
+    return (
+      <>
+        {this.renderBreadcrumb()}
+        {this.renderControls()}
+      </>
     )
   }
 
   render() {
     return (
       <div id="editor-stack">
-        <div id="editor-crumbs">
-          {this.renderBreadcrumb()}
+        <div id="editor-toolbar">
+          {this.renderToolbar()}
         </div>
 
         <section id="macro-editor">
           <div id="editor-buffer">
             <Editor
+              disabled={this.props.content == null}
               id="editor-textarea"
-              value={this.props.content}
-              onValueChange={this.props.updateContent}
+              value={this.props.content || ""}
+              onValueChange={this.props.update}
               highlight={this.highlight}
             />
           </div>

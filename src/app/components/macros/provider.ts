@@ -81,40 +81,40 @@ export default class {
   }
 
   load() {
-    walk(this.root, null, (err, res) => {
+    fs.readdir(this.root, (err, files) => {
       if(err) {
-        console.log(err)
+        console.error(err)
         return
       }
 
+      const macros = files
+      .filter(file => fs.statSync(path.join(this.root, file)).isDirectory() == false)
+      .filter(file => file.includes('.gcode'))
+      .map((file, index) => {
+        return {
+          title: file.replace('.gcode', ''),
+          name: file,
+          file: path.join(this.root, file),
+          key: index,
+          isLeaf: true
+        }
+      })
+      
       ReduxDispatch(
-        Action.loadMacros(res)
+        Action.loadMacros(macros)
       )
     })
-
   }
 
-  create(name:string, isDir:boolean = false) {
-    if(isDir) {
-      fs.ensureDirSync(
-        path.join(
-          this.root, 
-          name
-        )
-      )  
-    } else {
-      fs.ensureFileSync(
-        path.join(
-          this.root,
-          name
-        )
-      )
-    }
+  create(name:string) {
+    fs.ensureFileSync(this.cleanName(name))
 
     this.load()
   }
 
   read(name:string):string|null {
+    console.log("Reading: ", name)
+    
     if(!fs.pathExistsSync(name)) {
       console.error("File not found: ", name)
 
@@ -122,5 +122,35 @@ export default class {
     }
 
     return fs.readFileSync(name).toString()
+  }
+
+  save(name:string, content:string) {
+    fs.ensureFileSync(name)
+    fs.writeFileSync(name, content)
+  }
+
+  delete(name:string) {
+    fs.removeSync(name)
+    this.load()
+  }
+
+  refresh() {
+    this.load()
+  }
+
+  exists(name:string):boolean {
+    return fs.pathExistsSync(
+      this.cleanName(name)
+    )
+  }
+
+  cleanName(name:string):string {
+    var filename = name
+
+    if(name.includes('macros') == false) {
+      filename = path.join(this.root, filename)
+    }
+
+    return filename.includes('.gcode') ? filename : `${filename}.gcode`
   }
 }
