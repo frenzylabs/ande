@@ -6,7 +6,21 @@
 //  Copyright 2020 Wess Cope
 //
 
-import {createStore}  from 'redux'
-import RootReducer    from './reducer'
+import {
+  createStore,
+  applyMiddleware
+}  from 'redux'
 
-export default createStore(RootReducer)
+import RootReducer from './reducer'
+
+import {
+  Persistance
+} from './middleware'
+
+if(!globalThis.store) {
+  globalThis.ReduxStore = createStore(
+    RootReducer,
+    applyMiddleware(Persistance)
+  )
+}
+export default globalThis.ReduxStore

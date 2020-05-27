@@ -12,27 +12,8 @@
   flex: 1;
   background: rgba(255, 255, 255, 0.96);
   overflow:hidden;
-    
-  #buffer {
-    flex: 1;
-    display:flex;
-    flex-direction: column-reverse;
+  padding-top: 4px;
 
-    overflow-y: scroll;
-
-    ul {
-      li {
-        &:nth-child(even) {
-          background: #fff !important;
-        }
-        &:nth-child(odd) {
-          background: #fafafa !important;
-        }
-  
-      }
-    }
-
-  }
 
   #command-line {
     display:flex;

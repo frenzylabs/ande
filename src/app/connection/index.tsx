@@ -8,10 +8,9 @@
 
 import React      from 'react'
 import {connect}  from 'react-redux'
-import workly     from 'workly'
 
 import Component  from '../types/component'
-import Action     from '../store/action'
+import Action     from '../store/action/connection'
 
 import Serialport from '../types/serialport'
 import {Command}  from '../commands'
@@ -42,7 +41,7 @@ class Connection extends Component {
     Serialport.list()
     .then((data) => {
       this.dispatch(
-        Action.list(data)
+        Action.listPorts(data)
       )
     })
   }
@@ -52,24 +51,28 @@ class Connection extends Component {
 
     const config = {
       autoOpen: false, 
-      baudRate: this.props.connection.baudrate,
+      baudRate: this.props.baudrate,
       lock: false
     }
 
-    this.port = Serialport(this.props.connection.port, config)
+    this.port = Serialport(this.props.port, config)
     this.port.pipe(this.parser)
 
     this.parser.on('data', this.read)
 
     this.port.open((err) => {
       if(err) {
-        console.error("*** ERR: ", err)
+        this.dispatch(
+          Action.received(`[Error]: ${err}`)
+        )
         return
       }
 
       this.send(Command.firmware.info, err => {
         if(err) {
-          console.error("Initial command error: ", err)
+          this.dispatch(
+            Action.received(`[Error]: Initial command error (${err})`)
+          )
           return
         }
 
@@ -78,9 +81,6 @@ class Connection extends Component {
         )
       })
     })
-  }
-
-  tempCheck() {
   }
 
   read(data) {
@@ -101,14 +101,17 @@ class Connection extends Component {
   write() {
     if(this.port == null 
         || this.port.isOpen == false
-        || this.props.connection.status != ConnectionStatus.connected 
+        || this.props.status != ConnectionStatus.connected 
         || this.props.outgoing.length == 0
     ) { return }
 
     this.props.outgoing.forEach(item => {
       this.send(item, (err) => {
         if(err) {
-          console.error("Send error: ", err)
+          this.dispatch(
+            Action.received(`[Error]: Unable to send (${err})`)
+          )
+
           return
         }
 
@@ -134,7 +137,7 @@ class Connection extends Component {
   }
 
   handleConnection() {
-    switch(this.props.connection.status) {
+    switch(this.props.status) {
       case ConnectionStatus.connecting:
         this.connect()
         break
@@ -146,17 +149,22 @@ class Connection extends Component {
     }
   }
 
+ 
   componentDidMount() {
     this.list()
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.connection.status != this.props.connection.status) { 
+    if(prevProps.status != this.props.status) { 
       this.handleConnection()
     }
 
-    if(this.props.outgoing.length > 0 && this.props.connection.status == ConnectionStatus.connected) {
+    if(this.props.outgoing.length > 0 && this.props.status == ConnectionStatus.connected) {
       this.write()
+    }
+    
+    if((this.props.ports || []).length < 1 && this.props.status == ConnectionStatus.disconnected) {
+      this.list()
     }
   }
 
@@ -166,7 +174,7 @@ class Connection extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return state
+  return state.connection
 }
 
 export default connect(mapStateToProps)(Connection)

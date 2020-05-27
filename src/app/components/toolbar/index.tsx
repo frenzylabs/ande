@@ -10,7 +10,7 @@ import React      from 'react'
 import {connect}  from 'react-redux'
 
 import Component  from '../../types/component'
-import Action     from '../../store/action'
+import Action     from '../../store/action/connection'
 
 import {
   Button,
@@ -69,7 +69,6 @@ class Toolbar extends Component {
         <Button 
           disabled={!(this.props.connection.status == ConnectionStatus.connected)}
           type="link"
-          onClick={() => this.dispatch(Action.controls())}
         >
           <IconComponent 
             icon={Icon.asterisk} 

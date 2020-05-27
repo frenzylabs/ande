@@ -6,8 +6,9 @@
 //  Copyright 2019 Wess Cope
 //
 
-const path  = require('path')
-const isDev = require("electron-is-dev");
+const path        = require('path')
+const isDev       = require("electron-is-dev")
+const WindowState = require('electron-window-state')
 
 const { 
   BrowserWindow, 
@@ -19,12 +20,22 @@ if(isDev) {
 }
 
 const createWindow = () => {
+  const windowState = WindowState({
+    defaultWidth:   1000,
+    defaultHeight:  800
+  })
+
   const window = new BrowserWindow({
-    width: 900,
-    height: 680,
+    x:          windowState.x,
+    y:          windowState.y,
+    width:      windowState.width,
+    height:     windowState.height,
+    minWidth:   760,
+    minHeight:  600,
+    title:      "Hum",
     webPreferences: {
-      nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js')
+      nodeIntegration:  true,
+      preload:          'preload.js'
     }
   })
 
@@ -39,13 +50,26 @@ const createWindow = () => {
     : `file://${path.join(__dirname, "dist/index.html")}`
   )
 
+  window.webContents.session.clearCache()
+
+  windowState.manage(window)
+
+  window.on('page-title-updated', (e) => e.preventDefault())
   window.on('ready-to-show', () => window.show())
+  window.on('closed', () => window = null)
 }
 
 app.on('ready', createWindow)
+
+app.on('window-all-closed', () => {
+  if(process.platform.toLowerCase().includes('darwin')) {
+    app.quit()
+  }
+})
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
 })
+

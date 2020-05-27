@@ -6,6 +6,8 @@
 //  Copyright 2020 Wess Cope
 //
 
+import Datastore from '../data'
+
 import {
   ConnectionStatus
 } from '../connection'
@@ -20,18 +22,20 @@ export interface State {
   }
   macros:Array<object>,
   buffer:Array<string>,
-  outgoing:Array<string>
+  outgoing:Array<string>,
+  commandHistory: Array<string>
 }
 
 export const initialState:State = {
   controls:   false,
   ports:      [],
   connection: {
-    port:     null,
-    baudrate: null,
+    port:     Datastore.get('connection.port', null),
+    baudrate: Datastore.get('connection.baudrate', null),
     status:   ConnectionStatus.disconnected
   },
-  macros:     [],
-  buffer:     [],
-  outgoing:   []
+  macros:         [],
+  buffer:         [],
+  outgoing:       [],
+  commandHistory: Datastore.get('commandHistory', [])
 }

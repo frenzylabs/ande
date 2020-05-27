@@ -141,7 +141,7 @@ class MacroList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    macros: state.macros
+    macros: state.data.macros
   }
 }
 

@@ -8,47 +8,71 @@
 
 import React      from 'react'
 import {Provider} from 'react-redux'
-import store      from './store'
-import Data       from './data'
+import Store      from './store'
 
 import {
-  BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  withRouter
 } from 'react-router-dom'
 
 import {
   Toolbar,
   Nav,
   Terminal,
-  Macros
+  Macros,
+  Settings
 } from './components'
 
+import AppRoute   from './routes'
+import Menu       from './menu'
 import Connection from './connection'
 
-globalThis.ReduxDispatch  = store.dispatch
-globalThis.data           = new Data()
+Object.assign(globalThis, {
+  ReduxStore:     Store,
+  ReduxDispatch:  Store.dispatch
+})
 
-export default class extends React.Component {
+class App extends React.Component<any> {
+  constructor(props:any) {
+    super(props)
+  }
+
+  renderSettings(withBackground:boolean = false) {
+    if(!withBackground) { return }
+
+    return (
+      <Route exact path={AppRoute.Settings} component={Settings}/>
+    )
+  }
   render() {
+    const location    = this.props.location
+    const background  = location.state && location.state.background
+
+
     return ( 
-      <Provider store={store}>
-        <Router>
+      <Provider store={Store}>
+        <Menu>
           <Connection>
             <main>
+
               <Toolbar/>
               <section id="main-content">
                 <Nav/>
-                <Switch>
-                  <Route exact path="/" component={Terminal}/>
-                  <Route exact path="/macros" component={Macros}/>
+                <Switch location={background || location}>
+                  <Route exact path={AppRoute.Root}   component={Terminal}/>
+                  <Route exact path={AppRoute.Macros} component={Macros}/>
                 </Switch>
+
+                {this.renderSettings(background)}
               </section>
-              
+
             </main>
           </Connection>
-        </Router>
+        </Menu>
       </Provider>
     )
   }
 }
+
+export default withRouter(App)

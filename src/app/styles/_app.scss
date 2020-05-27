@@ -41,5 +41,6 @@ main {
 #main-content {
   flex: 1;
   display: flex;
-  overflow: hidden;
+  max-width: 100%;
+  width:100%;
 }

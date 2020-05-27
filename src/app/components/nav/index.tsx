@@ -9,14 +9,16 @@
 import React      from 'react'
 import Component  from '../../types/component'
 import Spacer     from '../spacer'
-import Icon       from '../../icon'
 import Option     from './option'
 
 import {
-  Link
+  NavLink,
+  withRouter
 } from 'react-router-dom'
 
-export default class extends Component {
+import Icon, {IconComponent} from '../../icon'
+
+class Nav extends Component {
   options = [
     {
       icon: Icon.terminal,
@@ -42,8 +44,23 @@ export default class extends Component {
 
         <Spacer/>
 
-        <Option icon={Icon.cog} path="/settings"/>
+        <NavLink
+          className="option"
+          to={{
+            pathname: '/settings',
+            state: {background: this.props.location}
+          }}
+          exact
+        >
+          <IconComponent
+            icon={Icon.cog}
+            style={{fontSize: '16px'}}
+            fixedWidth
+          />
+        </NavLink>
       </nav>
     )
   }
 }
+
+export default withRouter(Nav)

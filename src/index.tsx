@@ -9,6 +9,10 @@
 import React    from 'react'
 import ReactDOM from 'react-dom'
 
+import {
+  BrowserRouter as Router
+} from 'react-router-dom'
+
 import { library }  from '@fortawesome/fontawesome-svg-core'
 import { fas }      from '@fortawesome/free-solid-svg-icons'
 import { fad }      from '@fortawesome/pro-duotone-svg-icons'
@@ -21,6 +25,8 @@ library.add(fas, fad, fal, fab, far)
 import App from './app'
 
 ReactDOM.render(
-  <App/>,
+  <Router>
+    <App/>
+  </Router>,
   document.getElementById('root')
 )

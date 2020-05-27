@@ -16,6 +16,8 @@
   min-height: 50px;
   overflow:hidden;
   padding: {
+    top: 0;
+    bottom: 0;
     right: 20px;
     left: 20px;
   }
@@ -29,6 +31,26 @@
     span {
       font-size: 10px;
       color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  #ports-select {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 20px;
+
+    div {
+      &:first-child {
+        flex: 1;
+        width: 300px;
+        min-width: 300px;
+        margin-right: 10px;
+
+        .ant-select {
+          width: 100% !important;
+        }
+      }
     }
   }
 }

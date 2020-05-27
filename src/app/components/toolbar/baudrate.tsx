@@ -22,8 +22,10 @@ import {ConnectionStatus} from '../../connection'
 
 class Baudrate extends Component {
   render() {
+    const defaultValue = this.props.selected ? {defaultValue: this.props.selected} : {}
     return (
       <Select
+        {...defaultValue}
         disabled={this.props.status != ConnectionStatus.disconnected}
         style={{minWidth: '160px'}}
         showSearch
@@ -43,7 +45,6 @@ class Baudrate extends Component {
         {Baudrates.map((b, i) => 
           <Select.Option key={`baudrate-${i}`} value={b}>{b}</Select.Option>
         )}
-
       </Select>
     )
   }
@@ -51,7 +52,8 @@ class Baudrate extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    status: state.connection.status
+    status: state.connection.status,
+    selected: state.connection.baudrate
   }
 }
 

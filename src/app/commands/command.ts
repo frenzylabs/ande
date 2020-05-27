@@ -6,7 +6,6 @@
 //  Copyright 2020 Wess Cope
 //
 
-
 export enum Axis {
   X         = 'X',
   Y         = 'Y',
@@ -93,7 +92,7 @@ export const Command = {
     keepalive: 'M113 S2'
   },
 
-  action: (a:string) => `M118 A1 ${a}`
+  action: (a:string) => `M118 A1 ${a}`,
 }
 
 export default Command

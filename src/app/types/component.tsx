@@ -6,11 +6,14 @@
 //  Copyright 2020 Wess Cope
 //
 
-import React from 'react'
-import store from '../store'
+import React        from 'react'
+import Signal       from '../../libs/signal'
+import Store        from '../store'
+import UserDefaults from '../data/userdefaults'
 
 export default class extends React.Component<any, any> {
-  store     = store
-  dispatch  = store.dispatch
-  data      = globalThis.Data
+  signal        = Signal
+  store         = Store
+  dispatch      = Store.dispatch
+  userDefaults  = UserDefaults
 }

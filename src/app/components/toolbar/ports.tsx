@@ -17,10 +17,39 @@ import {
 
 const {Option} = Select
 
-import {ConnectionStatus} from '../../connection'
+import Icon, {IconComponent}  from '../../icon'
+import {ConnectionStatus}     from '../../connection'
 
 class Ports extends Component {
+  loading = false
 
+  state = {
+    portsOpen: false,
+    selected: null
+  }
+  constructor(props:any) {
+    super(props)
+
+    this.refreshAction = this.refreshAction.bind(this)
+  }
+
+  refreshAction(e) {
+    this.loading = true
+
+    this.setState({
+      portsOpen: false
+    })
+
+    this.dispatch(
+      Action.connection.clearPorts()
+    )
+
+    return
+  }
+
+  componentDidUpdate() {
+    this.loading = false
+  }
 
   renderOption(opt, idx) {
     return (
@@ -29,33 +58,53 @@ class Ports extends Component {
   }
 
   render() {
+    const selVal = this.state.selected == null ? {} : {value: this.state.selected}
+
     return (
-      <Select
-        disabled={this.props.status != ConnectionStatus.disconnected}
-        style={{minWidth: '200px'}}
-        showSearch
-        placeholder="Select a port..."
-        optionFilterProp="children"
-        onChange={(value) => 
-          this.dispatch(
-            Action.port(value.toString())
-          ) 
-        }
-        filterOption={(input, option) =>
-          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      >
-        {this.props.ports.map(this.renderOption)}
-      </Select>
+      <div id="ports-select">
+        <div>
+          <Select
+            {...selVal}
+            disabled={this.props.status != ConnectionStatus.disconnected || this.loading}
+            loading={this.loading}
+            placeholder="Select a port..."
+            optionFilterProp="children"
+            open={this.state.portsOpen}
+            onFocus={() => this.setState({portsOpen: true})}
+            onBlur={() => this.setState({portsOpen: false})}
+            onChange={(value) => {
+              if(!value) { return }
+
+                this.setState({
+                  portsOpen: false
+                }, () => 
+                  this.dispatch(
+                    Action.connection.port(value.toString())
+                  )
+                )
+              }
+            }
+            filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+          {this.props.ports.map(this.renderOption)}
+        </Select>
+        </div>
+      </div>
     )
   }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      selected: nextProps.port
+    }
+  }
+
 }
 
 const mapStateToProps = (state) => {
-  return {
-    ports: state.ports,
-    status: state.connection.status
-  }
+  return state.connection
 }
 
 export default connect(mapStateToProps)(Ports)

@@ -9,6 +9,5 @@
 declare module "Hum" {
   interface Window {
     require:any
-
   }
 }

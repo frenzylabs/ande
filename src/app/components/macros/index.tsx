@@ -8,6 +8,7 @@
 
 import React      from 'react'
 import Component  from '../../types/component'
+import Action     from '../../store/action/connection'
 
 import { 
   Modal
@@ -19,12 +20,13 @@ const { confirm } = Modal;
 
 import Icon, {IconComponent} from '../../icon'
 
+import Provider from './provider'
 import FileList from './list'
 import Editor   from './editor'
-import Provider from './provider'
+import Console  from './console'
 
 export default class extends Component {
-  provider = new Provider()
+  provider = Provider
 
   state = {
     selected: null,
@@ -40,6 +42,7 @@ export default class extends Component {
     this.save           = this.save.bind(this)
     this.update         = this.update.bind(this)
     this.delete         = this.delete.bind(this)
+    this.run            = this.run.bind(this)
     this.didSelect      = this.didSelect.bind(this)
     this.toggleNewFile  = this.toggleNewFile.bind(this)
   }
@@ -118,7 +121,7 @@ export default class extends Component {
       content: value
     })
   }
-
+ 
   didSelect(node) {
     if(this.state.selected && node.file === this.state.selected.file) { return }
 
@@ -127,6 +130,18 @@ export default class extends Component {
       content: this.loadContent(node.file)
     })
 
+  }
+
+  run() {
+    if(this.state.content == null) { return }
+
+    this.state.content.split("\n")
+    .map(line => line.trim())
+    .forEach(line =>
+      this.dispatch(
+        Action.send(line)
+      )
+    )
   }
 
   renderEditor() {
@@ -148,6 +163,7 @@ export default class extends Component {
         update={this.update}
         save={this.save}
         delete={this.delete}
+        run={this.run}
       />
     )
   }
@@ -163,7 +179,10 @@ export default class extends Component {
           toggleNewFile={this.toggleNewFile}
         />
 
-        {this.renderEditor()}
+        <div id="macro-content">
+          {this.renderEditor()}
+          <Console/>
+        </div>
       </div>
     )
   }

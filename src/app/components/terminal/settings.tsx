@@ -17,7 +17,7 @@ export default class extends React.Component<any> {
   autoScroll() {
     return (
       <Menu.Item>
-        <Checkbox>Auto scroll</Checkbox>
+        <Checkbox onChange={(this.props.autoScrollAction || null)}>Auto scroll</Checkbox>
       </Menu.Item>
     )
   }

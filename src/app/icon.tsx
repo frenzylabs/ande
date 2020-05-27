@@ -49,7 +49,9 @@ enum Icon {
   filePlus    = "fal file-plus",
   folderPlus  = "fal folder-plus",
   sync        = "fal sync",
-  question    = "fal question"
+  question    = "fal question",
+  play        = "fal play",
+  bottomArrow = "fad arrow-to-bottom"
 }
 
 export class IconComponent extends React.Component<any, null> {

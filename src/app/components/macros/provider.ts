@@ -6,6 +6,7 @@
 //  Copyright 2020 Wess Cope
 //
 
+import Store from '../../store'
 
 import {
   FileSystem,
@@ -14,63 +15,11 @@ import {
 
 const {fs, path} = FileSystem
 
-import Action from '../../store/action'
+import DataAction       from '../../store/action/data'
+import ConnectionAction from '../../store/action/connection'
 
-type WalkCallback =  (err: NodeJS.ErrnoException | null, res: {}[]) => void
 
-const walk = (directory: string, parentIndex:number = null, callback: WalkCallback) => {
-  const results: {}[] = []
-  
-	fs.readdir(directory, (err, files) => {
-		if (err) {
-			throw err;
-		}
-		
-    
-    if (files.length == 0) { return callback(null, results); }
-    
-    let pending = files.length
-
-		files.map(file => path.join(directory, file)).filter((file, index) => {
-			if(fs.statSync(file).isDirectory()) {
-        
-        walk(file, index, (err, children) => {
-          const name = path.basename(file)
-          
-          results.push({
-            title:     name,
-            key:      index,
-            children: children || [],
-            isLeaf:   false
-          });
-          
-          if (--pending < 1) {
-            callback(null, results)
-					}
-				})
-      }
-      
-      return fs.statSync(file).isFile()
-      
-		}).forEach((file, leafIndex) => {
-      const name = path.basename(file)
-
-      results.push({
-        title: name.replace('.gcode', ''),
-        name: name,
-        file: file,
-        key: `${parentIndex}-${leafIndex}`,
-        isLeaf: true
-      })
-      
-			if (!--pending) {
-				callback(null, results)
-			}
-		})
-	})
-}
-
-export default class {
+class MacroProvider {
   root = Env.directory.macros
 
   constructor() {
@@ -80,10 +29,25 @@ export default class {
     this.create = this.create.bind(this)
   }
 
+  loadSync() {
+    return fs.readdirSync(this.root)
+    .filter(file => fs.statSync(path.join(this.root, file)).isDirectory() == false)
+    .filter(file => file.includes('.gcode'))
+    .map((file, index) => {
+      return {
+        title: file.replace('.gcode', ''),
+        name: file,
+        file: path.join(this.root, file),
+        key: index,
+        isLeaf: true
+      }
+    })
+  }
+
   load() {
     fs.readdir(this.root, (err, files) => {
       if(err) {
-        console.error(err)
+        ReduxDispatch(ConnectionAction.received(`[Error]: ${err}`))
         return
       }
 
@@ -100,10 +64,8 @@ export default class {
         }
       })
       
-      ReduxDispatch(
-        Action.loadMacros(macros)
-      )
-    })
+      ReduxDispatch(DataAction.loadMacros(macros))
+   })
   }
 
   create(name:string) {
@@ -113,12 +75,10 @@ export default class {
   }
 
   read(name:string):string|null {
-    console.log("Reading: ", name)
-    
     if(!fs.pathExistsSync(name)) {
-      console.error("File not found: ", name)
+      ReduxDispatch(ConnectionAction.received(`[Error]: File not found ${name}`))
 
-      return
+      return null
     }
 
     return fs.readFileSync(name).toString()
@@ -138,6 +98,21 @@ export default class {
     this.load()
   }
 
+  run(name:string) {
+    const filename  = this.cleanName(name)
+    const content   = this.read(filename)
+     
+    if(!content) { return }
+
+    content.split("\n")
+    .map(line => line.trim())
+    .forEach(line =>
+      ReduxDispatch(
+        ConnectionAction.send(line)
+      )
+    )
+  }
+
   exists(name:string):boolean {
     return fs.pathExistsSync(
       this.cleanName(name)
@@ -154,3 +129,9 @@ export default class {
     return filename.includes('.gcode') ? filename : `${filename}.gcode`
   }
 }
+
+if(!globalThis.macroProvider) {
+  globalThis.macroProvider = new MacroProvider()
+}
+
+export default globalThis.macroProvider

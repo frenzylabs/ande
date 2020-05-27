@@ -6,18 +6,10 @@
 //  Copyright 2020 Wess Cope
 //
 
-import NeDB from 'nedb'
+const Store = window.require("electron-store")
 
-import {
-  FileSystem,
-  Env
-} from '../system'
-
-const {path} = FileSystem
-
-export default class {
-  datastore = new NeDB({
-    filename: path.join(Env.directory.user, '.hstore'),
-    autoload: true
-  })
+if(!globalThis.data) {
+  globalThis.data = new Store({name: '.hstore'})
 }
+
+export default globalThis.data

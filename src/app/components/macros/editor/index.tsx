@@ -114,6 +114,9 @@ export default class extends Component {
   renderControls() {
     return (
       <div id="macro-file-controls">
+        {(this.props.content || "").length > 0 && (
+          <a onClick={this.props.run}><IconComponent icon={Icon.play}/></a>
+        )}
         <a onClick={this.props.save}><IconComponent icon={Icon.save}/></a>
         <a onClick={this.props.delete}><IconComponent icon={Icon.trash}/></a>
       </div>
@@ -135,7 +138,7 @@ export default class extends Component {
     return (
       <div id="editor-stack">
         <div id="editor-toolbar">
-          {this.renderToolbar()}
+          {this.props.content != null && this.renderToolbar()}
         </div>
 
         <section id="macro-editor">
