@@ -30,6 +30,25 @@ class Nav extends Component {
     }
   ]
 
+  renderSettings() {
+    return (
+      <NavLink
+        className="option"
+        to={{
+          pathname: '/settings',
+          state: {background: this.props.location}
+        }}
+        exact
+      >
+        <IconComponent
+          icon={Icon.cog}
+          style={{fontSize: '16px'}}
+          fixedWidth
+        />
+      </NavLink>
+    )
+  }
+
   render() {
     return (
       <nav id="main-nav">
@@ -44,20 +63,7 @@ class Nav extends Component {
 
         <Spacer/>
 
-        <NavLink
-          className="option"
-          to={{
-            pathname: '/settings',
-            state: {background: this.props.location}
-          }}
-          exact
-        >
-          <IconComponent
-            icon={Icon.cog}
-            style={{fontSize: '16px'}}
-            fixedWidth
-          />
-        </NavLink>
+        <p style={{fontSize: '8', textAlign: 'center', color: 'rgba(255, 255, 255, 0.2)'}}>0.1.0</p>
       </nav>
     )
   }

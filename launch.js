@@ -7,11 +7,13 @@
 //
 
 const path        = require('path')
+const url         = require('url')
 const isDev       = require("electron-is-dev")
 const WindowState = require('electron-window-state')
 
 const { 
-  BrowserWindow, 
+  BrowserWindow,
+  globalShortcut,
   app
 } = require('electron')
 
@@ -25,14 +27,14 @@ const createWindow = () => {
     defaultHeight:  800
   })
 
-  const window = new BrowserWindow({
+  var window = new BrowserWindow({
     x:          windowState.x,
     y:          windowState.y,
     width:      windowState.width,
     height:     windowState.height,
     minWidth:   760,
     minHeight:  600,
-    title:      "Hum",
+    title:      "Ande",
     webPreferences: {
       nodeIntegration:  true,
       preload:          'preload.js'
@@ -47,7 +49,11 @@ const createWindow = () => {
   window.loadURL(
   isDev
     ? "http://localhost:1234"
-    : `file://${path.join(__dirname, "dist/index.html")}`
+    : url.format({
+      pathname: path.join(__dirname, "dist", "index.html"),
+      protocol: 'file:',
+      slashes: true
+    })
   )
 
   window.webContents.session.clearCache()
@@ -72,4 +78,3 @@ app.on('activate', () => {
     createWindow()
   }
 })
-

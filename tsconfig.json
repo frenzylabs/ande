@@ -10,10 +10,14 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "rootDir": "src",
+    "baseUrl": "./src",
     "jsx": "react",
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "~/*": ["./*"]
+    }
   },
   "lib": [
     "es6", 
@@ -26,6 +30,5 @@
   ],
   "exclude": [
     "dist",
-    "node_modules"
   ]
 }
