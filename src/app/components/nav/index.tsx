@@ -6,6 +6,8 @@
 //  Copyright 2020 Wess Cope
 //
 
+const app  = window.require('electron').remote.app
+
 import React      from 'react'
 import Component  from '../../types/component'
 import Spacer     from '../spacer'
@@ -63,7 +65,7 @@ class Nav extends Component {
 
         <Spacer/>
 
-        <p style={{fontSize: '8', textAlign: 'center', color: 'rgba(255, 255, 255, 0.2)'}}>0.1.0</p>
+        <p style={{fontSize: '8', textAlign: 'center', color: 'rgba(255, 255, 255, 0.2)'}}>{app.getVersion()}</p>
       </nav>
     )
   }

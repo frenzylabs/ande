@@ -15,12 +15,9 @@ import {
 
 import { library }  from '@fortawesome/fontawesome-svg-core'
 import { fas }      from '@fortawesome/free-solid-svg-icons'
-import { fad }      from '@fortawesome/pro-duotone-svg-icons'
-import { fal }      from '@fortawesome/pro-light-svg-icons'
 import { fab }      from '@fortawesome/free-brands-svg-icons'
-import { far }      from '@fortawesome/pro-regular-svg-icons'
 
-library.add(fas, fad, fal, fab, far)
+library.add(fas, fab)
 
 import App from './app'
 

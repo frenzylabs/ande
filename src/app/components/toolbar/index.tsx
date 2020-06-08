@@ -6,6 +6,8 @@
 //  Copyright 2020 Wess Cope
 //
 
+const app  = window.require('electron').remote.app
+
 import React      from 'react'
 import {connect}  from 'react-redux'
 
@@ -40,6 +42,10 @@ class Toolbar extends Component {
   }
 
   powerHandler() {
+    if(this.props.connection.port == null || this.props.connection.baudrate == null) {
+      return
+    }
+
     switch(this.props.connection.status) {
       case ConnectionStatus.disconnected:
         this.dispatch(
@@ -87,7 +93,7 @@ class Toolbar extends Component {
     return (
       <nav id="toolbar">
         <div className="panel">
-          <h1>Hum <span>0.0.1</span></h1>
+          <h1>Ande <span>{app.getVersion()}</span></h1>
         </div>
 
         <div className="flex-space"/>

@@ -22,16 +22,16 @@ import {
 
 
 enum Icon {
-  power       = "far power-off",
-  cog         = "fal cog",
-  cube        = "fal cube",
-  folders     = "fal folders",
-  extensions  = "fal plug",
-  cam         = "fal webcam",
-  harddrive   = "fal hdd",
-  sdcard      = "fal sd-card",
-  connections = "fal sitemap",
-  browser     = "fal browser",
+  power       = "fas power-off",
+  cog         = "fas cog",
+  cube        = "fas cube",
+  folders     = "fas folders",
+  extensions  = "fas plug",
+  cam         = "fas webcam",
+  harddrive   = "fas hdd",
+  sdcard      = "fas sd-card",
+  connections = "fas sitemap",
+  browser     = "fas window-maximize",
   circle      = "fas circle",
   trash       = "fas trash",
   up          = "fas caret-up",
@@ -46,12 +46,12 @@ enum Icon {
   stream      = "fas stream",
   save        = "fas save",
   windowClose = "fas window-close",
-  filePlus    = "fal file-plus",
-  folderPlus  = "fal folder-plus",
-  sync        = "fal sync",
-  question    = "fal question",
-  play        = "fal play",
-  bottomArrow = "fad arrow-to-bottom"
+  filePlus    = "fas plus",
+  folderPlus  = "fas folder-plus",
+  sync        = "fas sync",
+  question    = "fas question",
+  play        = "fas play",
+  bottomArrow = "fas arrow-to-bottom"
 }
 
 export class IconComponent extends React.Component<any, null> {

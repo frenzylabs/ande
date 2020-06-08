@@ -12,10 +12,6 @@ const {appMenu} = window.require('electron').remote.require('electron-util')
 import Menu from './option'
 
 export default [appMenu([
-  // Menu.Option(
-  //   "Preferences...",
-  //   {shortcut: "Command+,"}
-  // ),
   Menu.Option(
     "Check for update...",
   )

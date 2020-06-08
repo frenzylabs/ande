@@ -13,6 +13,7 @@ const path    = remote.require('path')
 const dataPath = app.getPath('userData')
 
 export default {
+  version: app.getVersion(),
   directory: {
     user: dataPath,
     macros: path.join(dataPath, 'macros')
