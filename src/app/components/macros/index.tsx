@@ -55,7 +55,6 @@ export default class extends Component {
     return this.provider.read(path)
   }
 
-
   create(name:string) {
     const fullpath = this.provider.cleanName(name)
 
@@ -130,6 +129,7 @@ export default class extends Component {
       content: this.loadContent(node.file)
     })
 
+    this.userDefaults.set('macro.current', JSON.stringify(node))
   }
 
   run() {
@@ -142,6 +142,25 @@ export default class extends Component {
         Action.send(line)
       )
     )
+  }
+
+  componentDidMount() {
+    this.signal.subscribe('menu.save', () => {
+      this.save()
+    })
+
+    const cached = this.userDefaults.get('macro.current')
+    if(!cached) { return }
+
+    const node = JSON.parse(cached)
+    
+    if(node) {
+      this.didSelect(node)
+    }
+  }
+
+  componentWillUnmount() {
+    this.signal.unsubscribe('menu.save')
   }
 
   renderEditor() {

@@ -60,6 +60,10 @@ class Connection extends Component {
 
     this.parser.on('data', this.read)
 
+    this.port.on('read', (...args) => {
+      console.log("############## READ: ", args)
+    })
+
     this.port.open((err) => {
       if(err) {
         this.dispatch(
@@ -80,6 +84,17 @@ class Connection extends Component {
           Action.connected()
         )
       })
+
+      this.port.on('close', () => {
+        console.log("CLOSED")
+        console.log("###################### BKLSDBJKSDBHVLSDFJKVHBS")
+  
+      })
+  
+      process.on('uncaughtException', function(err) {
+        this.disconnect()
+      })
+  
     })
   }
 
@@ -123,11 +138,13 @@ class Connection extends Component {
   }
 
   send(line, callback?:(err) => void, wait:boolean = true) {
-    this.port.write(line + '\r\n')
+    setTimeout(() => {
+      this.port.write(line + '\r\n')
 
-    if(wait) {
-      this.port.drain(callback)
-    }
+      if(wait) {
+        this.port.drain(callback)
+      }  
+    }, 300)
   }
 
   disconnect() {

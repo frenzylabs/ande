@@ -176,8 +176,3 @@ export default class Provider {
 
   }
 }
-
-// name:string
-// help?:string
-// handler:HumCommandHandler
-// args:{[key:string]: any}

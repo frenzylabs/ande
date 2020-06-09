@@ -1,9 +1,9 @@
 //
 //  list.tsx
-//  boilerplate
+//  ande
 // 
-//  Created by Wess Cope (me@wess.io) on 05/11/20
-//  Copyright 2020 Wess Cope
+//  Created by Wess Cope (wess@frenzylabs.com) on 06/08/20
+//  Copyright 2020 Frenzy Labs, LLC
 //
 
 import React      from 'react'
@@ -27,8 +27,7 @@ class MacroList extends Component {
   input = null
 
   state = {
-    newName: "",
-    selected: 0
+    newName: ""
   }
 
   constructor(props:any) {
@@ -43,24 +42,6 @@ class MacroList extends Component {
 
   refresh() {
     this.props.provider.load()
-
-    const cached          = JSON.parse(this.userDefaults.get('macro.current'))
-    const cachedSelected  = this.props.macros.filter(m => m.title == cached.title)[0]
-    const cachedIndex     = this.props.macros.indexOf(cachedSelected)
-
-    this.setState({
-      selected: cachedIndex > -1 ? cachedIndex : 0
-    })
-  }
-
-  updateSelected(node) {
-    const selected      = this.props.macros.filter(m => m.title == node.title)[0]
-    const selectedIndex = this.props.macros.indexOf(selected)
-
-    this.setState({
-      selected: selectedIndex > -1 ? selectedIndex : 0
-    })
-
   }
 
   onSelect(keys, info) {
@@ -72,8 +53,6 @@ class MacroList extends Component {
       title: node.title,
       file: node.file
     })
-
-    this.updateSelected(node)
   }
 
   enter(e) {
@@ -142,7 +121,6 @@ class MacroList extends Component {
             showLine
             blockNode
             switcherIcon={<DownOutlined />}
-            selectedKeys={[this.state.selected]}
             treeData={this.props.macros}
             onSelect={this.onSelect}
           >

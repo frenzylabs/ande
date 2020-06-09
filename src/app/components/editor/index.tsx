@@ -1,13 +1,13 @@
 //
-//  editor.tsx
-//  boilerplate
+//  index.tsx
+//  ande
 // 
-//  Created by Wess Cope (me@wess.io) on 05/11/20
-//  Copyright 2020 Wess Cope
+//  Created by Wess Cope (wess@frenzylabs.com) on 06/08/20
+//  Copyright 2020 Frenzy Labs, LLC
 //
 
 import React      from 'react'
-import Component  from '../../../types/component'
+import Component  from '../../types/component'
 import Editor     from 'react-simple-code-editor'
 import Prism      from 'prism-react-renderer/prism'
 import Highlight, {defaultProps} from 'prism-react-renderer'
@@ -16,7 +16,7 @@ import Highlight, {defaultProps} from 'prism-react-renderer'
 
 require("prismjs/components/prism-gcode")
 
-import Action from '../../../store/action'
+import Action from '../../store/action/connection'
 
 import {
   Dropdown,
@@ -24,7 +24,7 @@ import {
   Breadcrumb
 } from 'antd'
 
-import Icon, {IconComponent} from '../../../icon'
+import Icon, {IconComponent} from '../../icon'
 
 export default class extends Component {
   constructor(props:any) {
@@ -115,10 +115,10 @@ export default class extends Component {
     return (
       <div id="macro-file-controls">
         {(this.props.content || "").length > 0 && (
-          <a className="editor-toolbar-button" onClick={this.props.run}><IconComponent icon={Icon.play}/></a>
+          <a onClick={this.props.run}><IconComponent icon={Icon.play}/></a>
         )}
-        <a className="editor-toolbar-button" onClick={this.props.save}><IconComponent icon={Icon.save}/></a>
-        <a className="editor-toolbar-button" onClick={this.props.delete}><IconComponent icon={Icon.trash}/></a>
+        <a onClick={this.props.save}><IconComponent icon={Icon.save}/></a>
+        <a onClick={this.props.delete}><IconComponent icon={Icon.trash}/></a>
       </div>
     )
   }

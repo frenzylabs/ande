@@ -6,6 +6,9 @@
 //  Copyright 2020 Wess Cope
 //
 
-const Serialport  = window.require("serialport")
+export const Serialport  = window.require("serialport")
+export const Binding     = window.require('@serialport/bindings')
+
+Serialport.Binding = Binding
 
 export default Serialport

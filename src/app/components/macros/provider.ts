@@ -87,6 +87,8 @@ class MacroProvider {
   save(name:string, content:string) {
     fs.ensureFileSync(name)
     fs.writeFileSync(name, content)
+
+    this.refresh()
   }
 
   delete(name:string) {
