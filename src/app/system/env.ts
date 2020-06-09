@@ -16,6 +16,7 @@ export default {
   version: app.getVersion(),
   directory: {
     user: dataPath,
-    macros: path.join(dataPath, 'macros')
+    macros: path.join(dataPath, 'macros'),
+    am: path.join(dataPath, 'ancilla_macros'),
   }
 }

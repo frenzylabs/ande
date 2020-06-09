@@ -11,8 +11,7 @@ import {withRouter} from 'react-router'
 import {connect}    from 'react-redux'
 import Component    from '../types/component'
 import Action       from '../store/action'
-
-import Command from '../commands/command'
+import Command      from '../commands/command'
 
 class MenuProvider extends Component {
   subscriptions:string[] = [
@@ -47,8 +46,6 @@ class MenuProvider extends Component {
   }
 
   dispatchEvent(e) {
-    console.log("EV: ", e)
-
     var action = null
 
     switch(e) {

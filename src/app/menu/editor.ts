@@ -14,7 +14,7 @@ export default [
     [
       Menu.Option("New Macro", {shortcut: "Command+n"}),
       Menu.Seperator,
-      Menu.Option("Save"),
+      Menu.Option("Save", {shortcut: "Command+s"}),
       Menu.Option("Save As..."),
       Menu.Seperator,
       Menu.Option("Import"),

@@ -41,7 +41,7 @@ export default [
   }),
 
   command("run", "Runs specified macro: /run <macro name>", (...args) => {
-    const provider  = new MacroProvider()
+    const provider  = MacroProvider
     const name      = `${args[0] || ""}`.toLowerCase()
 
     if(name.length < 1) {

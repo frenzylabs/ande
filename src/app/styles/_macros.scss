@@ -123,6 +123,11 @@
         font-size:  16px;
         margin:     0 8px;
 
+        &:hover,
+        &:active {
+          color: #03a9f4;
+        }
+
         &:first-child {
           margin-left: 0;
         }
@@ -131,7 +136,7 @@
           margin-right: 0;
         }
       }
-    }  
+    }
   }
 
   #editor-stack {
