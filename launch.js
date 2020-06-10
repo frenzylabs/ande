@@ -6,14 +6,15 @@
 //  Copyright 2019 Wess Cope
 //
 
-const path        = require('path')
-const url         = require('url')
-const isDev       = require("electron-is-dev")
-const WindowState = require('electron-window-state')
+const path          = require('path')
+const url           = require('url')
+const isDev         = require("electron-is-dev")
+const WindowState   = require('electron-window-state')
+const {autoUpdater} = require('electron-updater')
 
 const { 
+  ipcMain,
   BrowserWindow,
-  globalShortcut,
   app
 } = require('electron')
 
@@ -61,9 +62,20 @@ const createWindow = () => {
   windowState.manage(window)
 
   window.on('page-title-updated', (e) => e.preventDefault())
-  window.on('ready-to-show', () => window.show())
   window.on('closed', () => window = null)
+
+  window.on('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify()
+    window.show()
+  })
+
+  autoUpdater.on('update-available', () => window.webContents.send('update-available'))
+  autoUpdater.on('update-downloaded', () => window.webContents.send('update-downloaded'))
 }
+
+ipcMain.on('install-update', () => {
+  autoUpdater.quitAndInstall()
+})
 
 app.on('ready', createWindow)
 

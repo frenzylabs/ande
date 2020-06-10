@@ -1,18 +1,22 @@
 {
   "name": "ande",
   "productName": "Ande",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "main": "launch.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frenzylabs/ande.git"
+  },
   "scripts": {
     "parcel:start": "parcel src/index.html --no-cache ",
     "parcel:build": "parcel build src/index.html --out-dir dist --no-cache --public-url ./ --target electron --bundle-node-modules",
     "dev": "concurrently \"cross-env BROWSER=none yarn parcel:start\" \"wait-on http://localhost:1234 && DEBUG=serialport/* ELECTRON_DISABLE_SECURITY_WARNINGS=true electron . \"",
     "clean": "rm -rf .cache && rm -rf dist",
     "rebuild": "electron-rebuild -f -w serialport",
+    "build": "yarn clean && yarn rebuild && yarn parcel:build",
     "pack": "electron-builder --dir",
-    "dist-mac": "electron-builder --mac",
-    "dist-windows": "electron-builder --windows",
+    "release": "yarn parcel:build && electron-builder --mac --win --publish never",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
@@ -59,6 +63,7 @@
     "antd": "^4.2.0",
     "dayjs": "^1.8.26",
     "electron-store": "^5.1.1",
+    "electron-updater": "^4.3.1",
     "electron-util": "^0.14.1",
     "electron-window-state": "^5.0.3",
     "fs-extra": "^9.0.0",
@@ -90,7 +95,11 @@
       "buildResources": "resources"
     },
     "mac": {
-      "category": "public.app-category.development"
+      "category": "public.app-category.development",
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
     }
   }
 }

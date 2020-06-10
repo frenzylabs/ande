@@ -20,6 +20,7 @@ import {
 } from 'antd'
 
 class CommandInput extends Component {
+  inputRef = null
   provider = new Provider()
 
   state = {
@@ -45,7 +46,7 @@ class CommandInput extends Component {
         this.enter()
         return
       case 38:
-        this.up()
+        this.up(e)
         return
       case 40:
         this.down()
@@ -55,13 +56,14 @@ class CommandInput extends Component {
     }
   }
 
-  up() {
+  up(e) {
     if(this.commandIndex >= (this.props.history.length - 1)) { return }
+
+    e.preventDefault()
 
     this.commandIndex += 1
 
     let line = this.props.history[this.commandIndex]
-
 
     this.setState({
       command: line
@@ -82,7 +84,7 @@ class CommandInput extends Component {
     this.commandIndex -= 1
 
     this.setState({
-      command: this.props.history[this.commandIndex]
+      command: this.props.history[this.commandIndex] || ""
     })
   }
 
@@ -124,10 +126,16 @@ class CommandInput extends Component {
     }
   }
 
+  componentDidUpdate() {
+    this.inputRef.selectionStart  = this.state.command.length
+    this.inputRef.selectionEnd    = this.state.command.length
+  }
+
   render() {
     return (
       <div className="command-input">
         <AntInput 
+          ref={(el) => this.inputRef = el}
           disabled={this.state.disabled}
           className="command-field" 
           placeholder="Enter command..." 

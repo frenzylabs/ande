@@ -6,6 +6,8 @@
 //  Copyright 2019 Wess Cope
 //
 
+const {ipcRenderer} = window.require('electron')
+
 import React      from 'react'
 import {Provider} from 'react-redux'
 import Store      from './store'
@@ -15,6 +17,8 @@ import {
   Route,
   withRouter
 } from 'react-router-dom'
+
+import {notification} from 'antd'
 
 import {
   Toolbar,
@@ -33,9 +37,33 @@ Object.assign(globalThis, {
   ReduxDispatch:  Store.dispatch
 })
 
+
 class App extends React.Component<any> {
   constructor(props:any) {
     super(props)
+
+    ipcRenderer.on('update-available', () =>{
+      ipcRenderer.removeAllListeners('update-available')
+
+      notification.info({
+        message:      "Downloading a new version of Ande",
+        placement:    "bottomRight"
+      })
+    })
+
+    ipcRenderer.on('update-downloaded', () => {
+      ipcRenderer.removeAllListeners('update-downloaded')
+
+      notification.info({
+        message: (
+          <div>
+            <p>A new version of Ande is available</p>
+            <button onClick={() => ipcRenderer.send('install-update')}>Click to download</button>
+          </div>
+        ),
+        placement: "bottomRight"
+      })
+    })
   }
 
   renderSettings(withBackground:boolean = false) {
@@ -48,7 +76,6 @@ class App extends React.Component<any> {
   render() {
     const location    = this.props.location
     const background  = location.state && location.state.background
-
 
     return ( 
       <Provider store={Store}>

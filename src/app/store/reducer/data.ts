@@ -21,7 +21,7 @@ export interface DataState {
 
 const initialState = {
   macros:         [],
-  commandHistory: Datastore.get('commandHistory', [])
+  commandHistory: [...new Set(Datastore.get('commandHistory', []))] as Array<string>
 }
 
 const reducer:Reducer = (state:DataState = initialState, action:DataActionType):DataState => {
@@ -35,7 +35,7 @@ const reducer:Reducer = (state:DataState = initialState, action:DataActionType):
     case DataAction.HISTORY_ADD:
       return {
         ...state,
-        commandHistory: [action.payload].concat(state.commandHistory)
+        commandHistory: Array.from(new Set([action.payload].concat(state.commandHistory)))
       }
 
     case DataAction.HISTORY_CLEAR:
