@@ -16,6 +16,9 @@
     "rebuild": "electron-rebuild -f -w serialport",
     "build": "yarn clean && yarn rebuild && yarn parcel:build",
     "pack": "electron-builder --dir",
+    "pack:win" : "electron-builder --win",
+    "pack:macos" : "electron-builder --mac",
+    "pack:linux" : "electron-builder --linux",
     "release": "yarn parcel:build && electron-builder --mac --win --publish never",
     "postinstall": "electron-builder install-app-deps"
   },

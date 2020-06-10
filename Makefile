@@ -9,6 +9,9 @@ BUILD_DIR 		= ".dist"
 
 all: run
 
+deps:
+	@yarn install --check-files
+
 clean:
 	@yarn clean \
 	&& rm -rf ${BUILD_DIR}
@@ -27,3 +30,6 @@ build: rebuild build_ui
 
 release: rebuild build_ui
 	@electron-builder --mac --win --publish always
+
+package: deps rebuild build_ui
+	@electron-builder .
