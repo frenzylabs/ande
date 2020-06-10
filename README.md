@@ -43,7 +43,6 @@ To build from source for your current OS:
 
 ```
 $ make package
-
 ```
 
 To build from source for a different OS:
@@ -69,5 +68,4 @@ $ make run
 *Ande* is licensed under Apache2. See LICENSE for more details.
 
 ## Contact us
-- Any questions comments or concerts? 
-Email us at [hi@frenzylabs.com](mailto:hi@frenzylabs.com)
+Any questions comments or concerts? Email us at [hi@frenzylabs.com](mailto:hi@frenzylabs.com)
