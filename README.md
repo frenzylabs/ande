@@ -12,7 +12,7 @@ family of 3D printing tools and utilies:
 
 Terminal             |  Editor
 :-------------------------:|:-------------------------:
-![](screenshots/ande-terminal.png?raw=true)  |  ![](screenshots/ande-editor.png?raw=true)
+![](screenshots/ande-terminal.png?raw=true)  |  ![](screenshots/ande-editor-console.png?raw=true)
 
 
 ## Features
