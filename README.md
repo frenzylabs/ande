@@ -8,6 +8,13 @@ family of 3D printing tools and utilies:
 - [Pluck.io](https://pluck.io)
 
 
+## Screenshots
+
+Terminal             |  Editor
+:-------------------------:|:-------------------------:
+![](screenshots/ande-terminal.png?raw=true)  |  ![](screenshots/ande-editor.png?raw=true)
+
+
 ## Features
 - Terminal
 - Built in commands (they start with /)
