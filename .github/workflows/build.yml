@@ -1,6 +1,9 @@
 name: Build/release
 
-on: push
+on: 
+  create:
+    tags:
+      - 'v*'
 
 jobs:
   release:
