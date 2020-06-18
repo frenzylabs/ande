@@ -105,6 +105,10 @@ export default class Provider {
     this.dispatch(
       Action.send(cmd)
     )
+
+    this.dispatch(
+      Action.received(cmd)
+    )
   }
 
   call(cmd:string) {
