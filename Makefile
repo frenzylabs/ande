@@ -34,7 +34,7 @@ release: rebuild build_ui
 package: deps rebuild build_ui
 	@electron-builder .
 
-dist: release
+dist: package
 	@git add . \
 	&& git commit -am "Release of version ${VERSION}" \
 	&& git push origin master \
