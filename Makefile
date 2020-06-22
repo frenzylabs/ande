@@ -38,5 +38,5 @@ dist: package
 	@git add . \
 	&& git commit -am "Release of version ${VERSION}" \
 	&& git push origin master \
-	&& git tag ${VERSION} \
-	&& git push origin ${VERSION}
+	&& git tag v${VERSION} \
+	&& git push origin v${VERSION}
