@@ -6,17 +6,13 @@
 //  Copyright 2020 Frenzy Labs, LLC
 //
 
-import React      from 'react'
-import Component  from '../../types/component'
-import Editor     from 'react-simple-code-editor'
-import Prism      from 'prism-react-renderer/prism'
-import Highlight, {defaultProps} from 'prism-react-renderer'
-
-(typeof global !== "undefined" ? global : window)['Prism'] = Prism
-
-require("prismjs/components/prism-gcode")
+import React        from 'react'
+import Component    from '../../types/component'
+import MonacoEditor from 'react-monaco-editor'
 
 import Action from '../../store/action/connection'
+
+import {id} from './language'
 
 import {
   Dropdown,
@@ -26,18 +22,32 @@ import {
 
 import Icon, {IconComponent} from '../../icon'
 
+import Console from './console'
+
 export default class extends Component {
+  
+  state = {
+    consoleShowing: this.userDefaults.get('macro_console_show', false)
+  }
+  
+  get options() {
+    return {
+      minimap:              {enabled: false},
+      // automaticLayout:      true,
+      scrollBeyondLastLine: false
+    }
+  }
+
   constructor(props:any) {
     super(props)
 
     this.getLine            = this.getLine.bind(this)
     this.runLine            = this.runLine.bind(this)
-    this.renderContextMenu  = this.renderContextMenu.bind(this)
-    this.renderLineNumber   = this.renderLineNumber.bind(this)
     this.renderBreadcrumb   = this.renderBreadcrumb.bind(this)
     this.renderControls     = this.renderControls.bind(this)
     this.renderToolbar      = this.renderToolbar.bind(this)
-    this.highlight          = this.highlight.bind(this)
+    this.editorDidMount     = this.editorDidMount.bind(this)
+    this.getEditorLine      = this.getEditorLine.bind(this)
   }
 
   getLine(line) {
@@ -57,44 +67,26 @@ export default class extends Component {
     )
   }
 
-  renderContextMenu(line) {
-    return (
-      <Menu>
-        <Menu.Item key={line} onClick={e => this.runLine(line)}>Run line</Menu.Item>
-      </Menu>
-    )
+  getEditorLine(editor) {
+    const pos   = editor.getPosition()
+    const text  = editor.getValue(pos)
+    const lines = text.split("\n")
+    const line  = lines[pos.lineNumber - 1]
+
+    this.runLine(line)
   }
 
-  renderLineNumber(number) {
-    return (
-      <Dropdown overlay={this.renderContextMenu(number)} trigger={['contextMenu']}>
-        <a className="line-number">{number}</a>
-      </Dropdown>
-    )
+  editorDidMount(editor, monaco) {
+    editor.addAction({
+      id: "run",
+      label: "Run line",
+      contextMenuGroupId: "g_run_line",
+      run: this.getEditorLine
+    })
+    editor.focus()
   }
 
-  highlight(code) {
-    return (
-      <Highlight {...defaultProps} code={code} language="gcode">
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <>
-            {tokens.map((line, key) => (
-              <div className="line" key={key} {...getLineProps({line, key})}>
-                {this.renderLineNumber(key + 1)}
-
-                <span className="line-content">
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({token, key})}/>
-                  ))}
-                </span>
-              </div>
-            ))}
-          </>
-        )}
-      </Highlight>
-    )
-  }
-
+  
   renderBreadcrumb() {
     const crumbs = ['macros'].concat(
       (this.props.file.split('macros')[1]).split('/').filter(item => item.length > 0)
@@ -141,17 +133,21 @@ export default class extends Component {
           {this.props.content != null && this.renderToolbar()}
         </div>
 
-        <section id="macro-editor">
-          <div id="editor-buffer">
-            <Editor
-              disabled={this.props.content == null}
-              id="editor-textarea"
-              value={this.props.content || ""}
-              onValueChange={this.props.update}
-              highlight={this.highlight}
-            />
-          </div>
-        </section>
+        <MonacoEditor
+          width="100%"
+          height={this.state.consoleShowing ? "calc(100% - 300px)" : "100%"}
+          language={id}
+          value={this.props.content}
+          options={this.options}
+          onChange={(newValue, e) => this.props.update(newValue) }
+          editorDidMount={this.editorDidMount}
+        />
+
+        <Console consoleChanged={(showing) => {
+          this.setState({
+            consoleShowing: showing
+          })
+        }}/>
       </div>
     )
   }

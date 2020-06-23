@@ -35,7 +35,13 @@ class Console extends Component {
 
     this.setState({
       showing: show
-    }, () => this.userDefaults.set('macro_console_show', show))
+    }, () => {
+      if(this.props.consoleChanged) {
+        this.props.consoleChanged(show)
+      }
+      
+      this.userDefaults.set('macro_console_show', show)
+    })
   }
 
   scrollToBottom() {

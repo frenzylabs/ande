@@ -22,8 +22,7 @@ import Icon, {IconComponent} from '../../icon'
 
 import Provider from './provider'
 import FileList from './list'
-import Editor   from './editor'
-import Console  from './console'
+import Editor   from '../editor'
 
 export default class extends Component {
   provider = Provider
@@ -200,7 +199,6 @@ export default class extends Component {
 
         <div id="macro-content">
           {this.renderEditor()}
-          <Console/>
         </div>
       </div>
     )

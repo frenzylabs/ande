@@ -7,7 +7,7 @@
 //
 
 export enum AppRoute {
-  Root      = "",
+  Root      = "/",
   Macros    = "/macros",
   Settings  = "/settings"
 }

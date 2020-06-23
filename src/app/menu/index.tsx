@@ -43,7 +43,7 @@ class MainMenu extends Component {
   template() {
     return [
       ...AppMenu,
-      ...(window.location.pathname == '/macros' ? EditorMenu : []),
+      ...(window.location.href.includes('macros') ? EditorMenu : []),
       ...ConnMenu(this.props.connection || {}),
       ...HistoryMenu,
       ...RunMenu(this.props.data.macros),
