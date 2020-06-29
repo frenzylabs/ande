@@ -38,12 +38,13 @@ export default class extends React.Component {
   @lazy get editor():editor.IStandaloneCodeEditor {
     return editor.create(this.buffer, {
       language:         Language,
-      
+      automaticLayout:  true,
       minimap:          { enabled: false},
       tabSize:          2,
       insertSpaces:     true,
       wordWrap:         "on",
-      model:            this.model
+      model:            this.model,
+      scrollBeyondLastLine: false
     })
   }
 

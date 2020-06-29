@@ -31,7 +31,7 @@ export class Console extends Component {
           </div>
 
           <div>
-            <button onClick={() => this.setState({expanded: !this.state.expanded})}>
+            <button onClick={() => this.setState({expanded: !this.state.expanded}, () => window.dispatchEvent(new Event('resize')))}>
               <IconComponent icon={this.state.expanded ? Icon.windowClose : Icon.browser} />
             </button>
           </div>
