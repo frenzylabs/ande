@@ -37,6 +37,5 @@ package: deps rebuild build_ui
 dist: package
 	@git add . \
 	&& git commit -am "Release of version ${VERSION}" \
-	&& git push origin master \
 	&& git tag v${VERSION} \
-	&& git push origin v${VERSION}
+	&& git push && git push --tags
