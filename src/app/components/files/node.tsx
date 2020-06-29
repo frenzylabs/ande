@@ -67,7 +67,7 @@ export class FileNode extends React.Component<Props> {
         {this.renderIcon()}
 
         <div className="file-node-title">
-          {this.props.model.name}
+          {this.props.model.title}
         </div>
       </div>
     )

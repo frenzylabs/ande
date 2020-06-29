@@ -19,7 +19,24 @@ import Buffer from './buffer'
 
 export class Console extends Component {
   state = {
-    expanded: true
+    expanded: this.userDefaults.get('macro_console_show')
+  }
+
+  constructor(props:any) {
+    super(props)
+
+    this.expanded = this.expanded.bind(this)
+  }
+
+  expanded(e) {
+    const expanded = !this.state.expanded
+
+    this.setState({
+      expanded: expanded
+    }, () => {
+      window.dispatchEvent(new Event('resize'))
+      this.userDefaults.set('macro_console_show', expanded)
+    })
   }
 
   render() {
@@ -31,7 +48,7 @@ export class Console extends Component {
           </div>
 
           <div>
-            <button onClick={() => this.setState({expanded: !this.state.expanded}, () => window.dispatchEvent(new Event('resize')))}>
+            <button onClick={this.expanded}>
               <IconComponent icon={this.state.expanded ? Icon.windowClose : Icon.browser} />
             </button>
           </div>

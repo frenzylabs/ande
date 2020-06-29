@@ -21,11 +21,11 @@ import Language from './language'
 import Toolbar  from './toolbar'
 
 
-export default class extends React.Component {
+export default class extends Component {
   buffer = null
 
   get content():string {
-    return '; GCodes'
+    return this.props.content || '; GCodes'
   }
 
   @lazy get model():editor.ITextModel {
@@ -46,36 +46,68 @@ export default class extends React.Component {
       model:            this.model,
       scrollBeyondLastLine: false
     })
+    
   }
 
   constructor(props: any) {
     super(props)
 
     this.updateDimensions = this.updateDimensions.bind(this)
+    this.run  = this.run.bind(this)
+    this.save = this.save.bind(this)
   }
 
+  
   updateDimensions() {
     this.editor.layout()
   }
 
+  run() {
+    if(this.props.run) {
+      this.props.run(this.model.getValue())
+    }
+  }
+
+  save() {
+    if(this.props.save) {
+      this.props.save(this.model.getValue())
+    }
+  }
+
   componentDidMount() {
     window.addEventListener('resize', this.updateDimensions)
+
+    this.signal.subscribe('menu.save', () => {
+      this.save()
+    })
+    this.signal.unsubscribe('menu.save')
+
 
     this.editor.focus()
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions)
-
+    this.signal.unsubscribe('menu.save')
+    
     this.model.dispose()
     this.editor.dispose()
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.content != this.content) {
+      this.model.setValue(this.content)
+    }
   }
 
   render() {
     return (
       <>
       <Toolbar
-        path={["kevin", "sux"]}
+        path={this.props.path || []}
+        saveCommand={this.save}
+        runCommand={this.run}
+        trashCommand={this.props.trashCommand}
       />
 
       <div id="text-editor">

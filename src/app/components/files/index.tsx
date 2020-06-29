@@ -23,8 +23,9 @@ import {
 interface Props {
   title?:string
   tree?:FileModel[]
+  selected?: number
   onFileSelect?:(FileModel) => void
-  onFileCreate?:(FileModel) => void
+  onFileCreate?:(string) => void
   onRefresh?:() => void
 }
 
@@ -32,9 +33,8 @@ export default class extends React.Component<Props> {
   newFileInputRef = null
 
   state = {
-    selected: -1,
-    showNewFile: false,
-    newFileName: ""
+    showNewFile:  false,
+    newFileName:  ""
   }
 
   get data():FileModel[] {
@@ -74,9 +74,7 @@ export default class extends React.Component<Props> {
   enter(e) {
     if(!this.props.onFileCreate || this.state.newFileName.length < 1) { return }
 
-    this.props.onFileCreate({
-      name: this.state.newFileName
-    })
+    this.props.onFileCreate(this.state.newFileName)
     
     this.esc()
   }
@@ -103,11 +101,13 @@ export default class extends React.Component<Props> {
   }
 
   renderNode(value, index) {
+    const selected = value.file == (this.props.selected && this.props.selected['file'])
+
     return (
       <FileNode 
         model={value} 
         key={`file-node-${index}`} 
-        selected={index == this.state.selected ? true : false} 
+        selected={selected} 
         onSelect={model => this.onFileSelect(model, index)}
       />
     )
