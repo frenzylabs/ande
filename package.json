@@ -1,7 +1,7 @@
 {
   "name": "ande",
   "productName": "Ande",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "main": "launch.js",
   "license": "MIT",
   "repository": {
@@ -16,9 +16,9 @@
     "rebuild": "electron-rebuild -f -w serialport",
     "build": "yarn clean && yarn rebuild && yarn parcel:build",
     "pack": "electron-builder --dir",
-    "pack:win" : "electron-builder --win",
-    "pack:macos" : "electron-builder --mac",
-    "pack:linux" : "electron-builder --linux",
+    "pack:win": "electron-builder --win",
+    "pack:macos": "electron-builder --mac",
+    "pack:linux": "electron-builder --linux",
     "release": "yarn parcel:build && electron-builder --mac --win --publish never",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -61,6 +61,7 @@
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-regular-svg-icons": "^5.13.1",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.10",
     "antd": "^4.2.0",
@@ -70,6 +71,7 @@
     "electron-util": "^0.14.1",
     "electron-window-state": "^5.0.3",
     "fs-extra": "^9.0.0",
+    "monaco-editor": "^0.20.0",
     "prism-react-renderer": "^1.1.0",
     "prismjs": "^1.20.0",
     "react-redux": "^7.2.0",

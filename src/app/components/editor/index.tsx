@@ -2,157 +2,118 @@
 //  index.tsx
 //  ande
 // 
-//  Created by Wess Cope (wess@frenzylabs.com) on 06/08/20
+//  Created by Wess Cope (wess@frenzylabs.com) on 06/26/20
 //  Copyright 2020 Frenzy Labs, LLC
 //
 
 import React      from 'react'
+import {connect}  from 'react-redux'
 import Component  from '../../types/component'
-import Editor     from 'react-simple-code-editor'
-import Prism      from 'prism-react-renderer/prism'
-import Highlight, {defaultProps} from 'prism-react-renderer'
 
-(typeof global !== "undefined" ? global : window)['Prism'] = Prism
-
-require("prismjs/components/prism-gcode")
-
-import Action from '../../store/action/connection'
+import lazy from '../../../libs/lazy'
 
 import {
-  Dropdown,
-  Menu,
-  Breadcrumb
-} from 'antd'
+  editor
+} from 'monaco-editor'
 
-import Icon, {IconComponent} from '../../icon'
+
+import Language from './language'
+import Toolbar  from './toolbar'
+
 
 export default class extends Component {
-  constructor(props:any) {
+  buffer = null
+
+  get content():string {
+    return this.props.content || '; GCodes'
+  }
+
+  @lazy get model():editor.ITextModel {
+    return editor.createModel(
+      this.content,
+      Language
+    )
+  }
+
+  @lazy get editor():editor.IStandaloneCodeEditor {
+    return editor.create(this.buffer, {
+      language:         Language,
+      automaticLayout:  true,
+      minimap:          { enabled: false},
+      tabSize:          2,
+      insertSpaces:     true,
+      wordWrap:         "on",
+      model:            this.model,
+      scrollBeyondLastLine: false
+    })
+    
+  }
+
+  constructor(props: any) {
     super(props)
 
-    this.getLine            = this.getLine.bind(this)
-    this.runLine            = this.runLine.bind(this)
-    this.renderContextMenu  = this.renderContextMenu.bind(this)
-    this.renderLineNumber   = this.renderLineNumber.bind(this)
-    this.renderBreadcrumb   = this.renderBreadcrumb.bind(this)
-    this.renderControls     = this.renderControls.bind(this)
-    this.renderToolbar      = this.renderToolbar.bind(this)
-    this.highlight          = this.highlight.bind(this)
+    this.updateDimensions = this.updateDimensions.bind(this)
+    this.run  = this.run.bind(this)
+    this.save = this.save.bind(this)
   }
 
-  getLine(line) {
-    const index = line - 1
-    const lines = (this.props.content || "").split(/\n/)
-
-    if(lines.length < 1 || lines.length < line) { return }
-
-    return lines[index]
+  
+  updateDimensions() {
+    this.editor.layout()
   }
 
-  runLine(line) {
-    this.dispatch(
-      Action.send(
-        this.getLine(line)
-      )
-    )
+  run() {
+    if(this.props.run) {
+      this.props.run(this.model.getValue())
+    }
   }
 
-  renderContextMenu(line) {
-    return (
-      <Menu>
-        <Menu.Item key={line} onClick={e => this.runLine(line)}>Run line</Menu.Item>
-      </Menu>
-    )
+  save() {
+    if(this.props.save) {
+      this.props.save(this.model.getValue())
+    }
   }
 
-  renderLineNumber(number) {
-    return (
-      <Dropdown overlay={this.renderContextMenu(number)} trigger={['contextMenu']}>
-        <a className="line-number">{number}</a>
-      </Dropdown>
-    )
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions)
+
+    this.signal.subscribe('menu.save', () => {
+      this.save()
+    })
+    this.signal.unsubscribe('menu.save')
+
+
+    this.editor.focus()
   }
 
-  highlight(code) {
-    return (
-      <Highlight {...defaultProps} code={code} language="gcode">
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <>
-            {tokens.map((line, key) => (
-              <div className="line" key={key} {...getLineProps({line, key})}>
-                {this.renderLineNumber(key + 1)}
-
-                <span className="line-content">
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({token, key})}/>
-                  ))}
-                </span>
-              </div>
-            ))}
-          </>
-        )}
-      </Highlight>
-    )
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions)
+    this.signal.unsubscribe('menu.save')
+    
+    this.model.dispose()
+    this.editor.dispose()
   }
 
-  renderBreadcrumb() {
-    const crumbs = ['macros'].concat(
-      (this.props.file.split('macros')[1]).split('/').filter(item => item.length > 0)
-    ).map((item, index) => (
-      <Breadcrumb.Item key={index}>{item.replace('.gcode', '')}</Breadcrumb.Item>
-    ))
-
-    return (
-      <div id="macro-file-path">
-        <Breadcrumb separator=">">
-          {crumbs}
-        </Breadcrumb>
-      </div>
-    )
-  }
-
-  renderControls() {
-    return (
-      <div id="macro-file-controls">
-        {(this.props.content || "").length > 0 && (
-          <a onClick={this.props.run}><IconComponent icon={Icon.play}/></a>
-        )}
-        <a onClick={this.props.save}><IconComponent icon={Icon.save}/></a>
-        <a onClick={this.props.delete}><IconComponent icon={Icon.trash}/></a>
-      </div>
-    )
-  }
-
-  renderToolbar() {
-    if(!this.props.file) { return }
-
-    return (
-      <>
-        {this.renderBreadcrumb()}
-        {this.renderControls()}
-      </>
-    )
+  componentDidUpdate(prevProps) {
+    if(prevProps.content != this.content) {
+      this.model.setValue(this.content)
+    }
   }
 
   render() {
     return (
-      <div id="editor-stack">
-        <div id="editor-toolbar">
-          {this.props.content != null && this.renderToolbar()}
-        </div>
+      <>
+      <Toolbar
+        path={this.props.path || []}
+        saveCommand={this.save}
+        runCommand={this.run}
+        trashCommand={this.props.trashCommand}
+      />
 
-        <section id="macro-editor">
-          <div id="editor-buffer">
-            <Editor
-              disabled={this.props.content == null}
-              id="editor-textarea"
-              value={this.props.content || ""}
-              onValueChange={this.props.update}
-              highlight={this.highlight}
-            />
-          </div>
-        </section>
+      <div id="text-editor">
+        <div id="text-editor-buffer" ref={el => this.buffer = el} />
       </div>
+      </>
     )
   }
 }

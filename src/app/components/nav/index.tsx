@@ -24,11 +24,11 @@ class Nav extends Component {
   options = [
     {
       icon: Icon.terminal,
-      path: '/'
+      path: ''
     },
     {
       icon: Icon.stream,
-      path: '/macros'
+      path: 'macros'
     }
   ]
 

@@ -1,0 +1,81 @@
+//
+//  _files.scss
+//  ande
+// 
+//  Created by Wess Cope (wess@frenzylabs.com) on 06/29/20
+//  Copyright 2020 Frenzy Labs, LLC
+//
+
+#files {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  border-right: 1px solid #eaeaea;
+
+  #files-toolbar {
+    display:flex;
+    align-items: center;
+    padding: 6px;
+    background: transparent;
+    
+    .files-toolbar-option {
+      button {
+        border: none;
+        background: transparent;
+
+        &:active {
+          background: #eaeaea;
+        }
+      }
+    }
+  }
+
+
+  .file-node {
+    display: flex;
+    align-items: center;
+    padding: 6px 6px 6px 0;
+    color: rgba(0, 0, 0, 0.6);
+
+    cursor: pointer;
+
+    &:hover {
+      color: blue;
+    }
+
+    &.selected {
+      background: #eaeaea;
+    }
+
+    .file-node-icon {
+      margin: {
+        right: 8px;
+        left: 14px;
+      };
+    }
+
+    .file-node-title {
+      flex: 1;
+    }
+  }
+
+  #files-new-file {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    margin-top: 5px;
+
+    div {
+      &:first-child {
+        margin-right: 8px;
+        color: rgba(0, 0, 0, 0.4);
+      }
+
+      &:last-child {
+        flex: 1;
+      }
+    }
+  }
+}

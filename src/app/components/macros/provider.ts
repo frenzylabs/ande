@@ -38,8 +38,7 @@ class MacroProvider {
         title: file.replace('.gcode', ''),
         name: file,
         file: path.join(this.root, file),
-        key: index,
-        isLeaf: true
+        key: index
       }
     })
   }
@@ -59,8 +58,7 @@ class MacroProvider {
           title: file.replace('.gcode', ''),
           name: file,
           file: path.join(this.root, file),
-          key: index,
-          isLeaf: true
+          key: index
         }
       })
       
@@ -122,11 +120,7 @@ class MacroProvider {
   }
 
   cleanName(name:string):string {
-    var filename = name
-
-    if(name.includes('macros') == false) {
-      filename = path.join(this.root, filename)
-    }
+    var filename = path.join(this.root, name)
 
     return filename.includes('.gcode') ? filename : `${filename}.gcode`
   }

@@ -7,6 +7,7 @@
 //
 
 import React      from 'react'
+import {connect}  from 'react-redux'
 import Component  from '../../types/component'
 import Action     from '../../store/action/connection'
 
@@ -18,20 +19,18 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const { confirm } = Modal;
 
-import Icon, {IconComponent} from '../../icon'
-
+import Files    from '../files'
+import Editor   from '../editor'
+import Console  from '../console'
 import Provider from './provider'
-import FileList from './list'
-import Editor   from './editor'
-import Console  from './console'
 
-export default class extends Component {
+class Macros extends Component {
   provider = Provider
 
   state = {
-    selected: null,
-    content: null,
-    showNew: false
+    selected:   null,
+    content:    null,
+    showNew:    false,
   }
 
   constructor(props:any) {
@@ -40,7 +39,6 @@ export default class extends Component {
     this.loadContent    = this.loadContent.bind(this)
     this.create         = this.create.bind(this)
     this.save           = this.save.bind(this)
-    this.update         = this.update.bind(this)
     this.delete         = this.delete.bind(this)
     this.run            = this.run.bind(this)
     this.didSelect      = this.didSelect.bind(this)
@@ -86,12 +84,12 @@ export default class extends Component {
     })
   }
 
-  save() {
+  save(content) {
     if(this.state.selected == null) { return }
 
     const {file} = this.state.selected
 
-    this.provider.save(file, this.state.content)
+    this.provider.save(file, content)
   }
 
   delete() {
@@ -114,28 +112,23 @@ export default class extends Component {
     })
   }
 
-  update(value) {
-    this.setState({
-      ...this.state,
-      content: value
-    })
-  }
- 
   didSelect(node) {
     if(this.state.selected && node.file === this.state.selected.file) { return }
 
+    const content = this.loadContent(node.file)
+
     this.setState({
       selected: node,
-      content: this.loadContent(node.file)
+      content: content
     })
 
     this.userDefaults.set('macro.current', JSON.stringify(node))
   }
 
-  run() {
-    if(this.state.content == null) { return }
+  run(content) {
+    this.save(content)
 
-    this.state.content.split("\n")
+    content.split("\n")
     .map(line => line.trim())
     .forEach(line =>
       this.dispatch(
@@ -145,11 +138,8 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    this.signal.subscribe('menu.save', () => {
-      this.save()
-    })
-
     const cached = this.userDefaults.get('macro.current')
+
     if(!cached) { return }
 
     const node = JSON.parse(cached)
@@ -159,50 +149,41 @@ export default class extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.signal.unsubscribe('menu.save')
-  }
-
-  renderEditor() {
-    if(this.state.content == null) {
-      return ( 
-        <div id="macros-empty">
-          <div id="empty-content">
-            <h1><IconComponent icon={Icon.harddrive}/></h1>
-            <h3>Why not select or create a new Macro?</h3>
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <Editor 
-        file={this.state.selected == null ? null : this.state.selected.file}
-        content={this.state.content} 
-        update={this.update}
-        save={this.save}
-        delete={this.delete}
-        run={this.run}
-      />
-    )
-  }
-
   render() {
     return (
       <div id="macros">
-        <FileList 
-          provider={this.provider} 
-          didSelect={this.didSelect}
-          create={this.create}
-          showNew={this.state.showNew}
-          toggleNewFile={this.toggleNewFile}
-        />
+        <div id="macros-master">
+          <Files
+            title="Macros"
+            selected={this.state.selected}
+            tree={this.props.macros || []}
+            onFileSelect={this.didSelect}
+            onFileCreate={this.create}
+            onRefresh={this.provider.load}
+          />
+        </div>
 
-        <div id="macro-content">
-          {this.renderEditor()}
+        <div id="macros-detail">
+          <Editor
+            path={['macros', (this.state.selected && this.state.selected['title']) || '']}
+            content={this.state.content}
+            save={this.save}
+            run={this.run}
+            trashCommand={this.delete}
+          />
+
           <Console/>
         </div>
       </div>
     )
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    macros: state.data.macros
+  }
+}
+
+export default connect(mapStateToProps)(Macros)

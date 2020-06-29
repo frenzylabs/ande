@@ -30,7 +30,7 @@ const initialState = {
   baudrate: Datastore.get('connection.baudrate', null),
   status:   ConnectionStatus.disconnected,
   outgoing: [],
-  buffer:   []
+  buffer:   ['']
 }
 
 const reducer:Reducer = (state:ConnectionState = initialState, action:ConnectionActionType):ConnectionState => {
