@@ -38,8 +38,7 @@ class MacroProvider {
         title: file.replace('.gcode', ''),
         name: file,
         file: path.join(this.root, file),
-        key: index,
-        isLeaf: true
+        key: index
       }
     })
   }
@@ -59,8 +58,7 @@ class MacroProvider {
           title: file.replace('.gcode', ''),
           name: file,
           file: path.join(this.root, file),
-          key: index,
-          isLeaf: true
+          key: index
         }
       })
       

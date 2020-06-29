@@ -1,0 +1,97 @@
+//
+//  _reset.scss
+//  ande
+// 
+//  Created by Wess Cope (wess@frenzylabs.com) on 06/29/20
+//  Copyright 2020 Frenzy Labs, LLC
+//
+
+html,
+body,
+p,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+blockquote,
+figure,
+fieldset,
+legend,
+textarea,
+pre,
+iframe,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}  
+
+// Headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+// List
+ul {
+  list-style: none;
+}
+
+// Form
+button,
+input,
+select,
+textarea {
+  margin: 0;
+}
+
+// Box sizing
+html { 
+  box-sizing: border-box; 
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  &,
+  &::before,
+  &::after { box-sizing: inherit; }
+}
+
+// Media
+img,
+video {
+  height: auto;
+  max-width: 100%;
+}
+
+// Iframe
+iframe { border: 0; }
+
+// Table
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+ 
+  &:not([align]) {
+    text-align: left;
+  }
+}

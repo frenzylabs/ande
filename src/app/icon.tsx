@@ -21,7 +21,7 @@ import {
 } from '@fortawesome/react-fontawesome'
 
 
-enum Icon {
+export enum Icon {
   power       = "fas power-off",
   cog         = "fas cog",
   cube        = "fas cube",
@@ -51,7 +51,9 @@ enum Icon {
   sync        = "fas sync",
   question    = "fas question",
   play        = "fas play",
-  bottomArrow = "fas arrow-to-bottom"
+  bottomArrow = "fas arrow-to-bottom",
+  file        = "far file",
+  folder      = "fas folder"
 }
 
 export class IconComponent extends React.Component<any, null> {

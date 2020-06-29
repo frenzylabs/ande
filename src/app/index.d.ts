@@ -6,7 +6,11 @@
 //  Copyright 2020 Wess Cope
 //
 
-declare module "Hum" {
+declare module '*.svg'
+declare module '*.png'
+declare module '*.jpg'
+
+declare module "Ande" {
   interface Window {
     require:any
   }

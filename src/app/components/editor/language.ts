@@ -26,3 +26,5 @@ languages.setMonarchTokensProvider(id, {
     ]
   }
 })
+
+export default id

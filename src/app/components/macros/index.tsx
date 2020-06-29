@@ -18,11 +18,11 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const { confirm } = Modal;
 
-import Icon, {IconComponent} from '../../icon'
 
-import Provider from './provider'
-import FileList from './list'
+import Files    from '../files'
 import Editor   from '../editor'
+import Console  from '../console'
+import Provider from './provider'
 
 export default class extends Component {
   provider = Provider
@@ -162,43 +162,21 @@ export default class extends Component {
     this.signal.unsubscribe('menu.save')
   }
 
-  renderEditor() {
-    if(this.state.content == null) {
-      return ( 
-        <div id="macros-empty">
-          <div id="empty-content">
-            <h1><IconComponent icon={Icon.harddrive}/></h1>
-            <h3>Why not select or create a new Macro?</h3>
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <Editor 
-        file={this.state.selected == null ? null : this.state.selected.file}
-        content={this.state.content} 
-        update={this.update}
-        save={this.save}
-        delete={this.delete}
-        run={this.run}
-      />
-    )
-  }
+ 
 
   render() {
     return (
       <div id="macros">
-        <FileList 
-          provider={this.provider} 
-          didSelect={this.didSelect}
-          create={this.create}
-          showNew={this.state.showNew}
-          toggleNewFile={this.toggleNewFile}
-        />
+        <div id="macros-master">
+          <Files
+            title="Macros"
+          />
+        </div>
 
-        <div id="macro-content">
-          {this.renderEditor()}
+        <div id="macros-detail">
+          <Editor/>
+
+          <Console/>
         </div>
       </div>
     )
