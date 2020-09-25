@@ -38,13 +38,14 @@ const createWindow = () => {
     title:      "Ande",
     webPreferences: {
       nodeIntegration:  true,
-      preload:          'preload.js'
+      preload:          'preload.js',
+      webviewTag:       true
     }
   })
 
-
+  
   if(isDev) {
-    window.webContents.openDevTools();
+    window.webContents.openDevTools()
   }
 
   window.loadURL(

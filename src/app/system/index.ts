@@ -7,5 +7,6 @@
 //
 
 export {default as FileSystem}  from './file'
-export {FileObject}             from './file'
 export {default as Env}         from './env'
+export {default as dnssd}       from './mdns'
+export {default as net}         from './net'

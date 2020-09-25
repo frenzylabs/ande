@@ -20,6 +20,8 @@ import {
 
 import Icon, {IconComponent} from '../../icon'
 
+import Octologo from '../../images/octoprint.png'
+
 class Nav extends Component {
   options = [
     {
@@ -51,6 +53,32 @@ class Nav extends Component {
     )
   }
 
+  renderOctoprint() {
+    return (
+      <NavLink
+        className="option"
+        activeClassName="current"
+        to='/octoprint'
+        exact
+    >
+      <img src={Octologo} width={32}/>
+    </NavLink>
+
+    )
+  }
+
+  renderDivider() {
+    return (
+      <div style={{
+        height: '2px', 
+        width: '50px',  
+        borderTop: '1px solid rgba(0, 0, 0, 1)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+        margin: '0 auto',
+      }}/>
+    )
+  }
+
   render() {
     return (
       <nav id="main-nav">
@@ -64,6 +92,12 @@ class Nav extends Component {
         )}
 
         <Spacer/>
+
+        {this.renderOctoprint()}
+
+        <br/>
+        {this.renderDivider()}
+        <br/>
 
         <p style={{fontSize: '8', textAlign: 'center', color: 'rgba(255, 255, 255, 0.2)'}}>{app.getVersion()}</p>
       </nav>

@@ -23,6 +23,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/electron": "^1.6.10",
     "@types/electron-store": "^3.2.0",
     "@types/electron-util": "^0.11.1",
@@ -65,7 +66,9 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.10",
     "antd": "^4.2.0",
+    "axios": "^0.20.0",
     "dayjs": "^1.8.26",
+    "dnssd2": "^1.0.0",
     "electron-store": "^5.1.1",
     "electron-updater": "^4.3.1",
     "electron-util": "^0.14.1",

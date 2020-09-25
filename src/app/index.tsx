@@ -25,6 +25,7 @@ import {
   Nav,
   Terminal,
   Macros,
+  Octoprint,
   Settings
 } from './components'
 
@@ -87,8 +88,9 @@ class App extends React.Component<any> {
               <section id="main-content">
                 <Nav/>
                 <Switch location={background || location}>
-                  <Route exact path={AppRoute.Root}   component={Terminal}/>
-                  <Route exact path={AppRoute.Macros} component={Macros}/>
+                  <Route exact path={AppRoute.Root}       component={Terminal}/>
+                  <Route exact path={AppRoute.Macros}     component={Macros}/>
+                  <Route exact path={AppRoute.Octoprint}  component={Octoprint}/>
                 </Switch>
 
                 {this.renderSettings(background)}
