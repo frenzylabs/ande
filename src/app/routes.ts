@@ -9,6 +9,7 @@
 export enum AppRoute {
   Root      = "/",
   Macros    = "/macros",
+  Octoprint = "/octoprint",
   Settings  = "/settings"
 }
 
