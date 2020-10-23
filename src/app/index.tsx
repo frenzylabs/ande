@@ -26,6 +26,7 @@ import {
   Terminal,
   Macros,
   Octoprint,
+  Marlin,
   Settings
 } from './components'
 
@@ -91,6 +92,7 @@ class App extends React.Component<any> {
                   <Route exact path={AppRoute.Root}       component={Terminal}/>
                   <Route exact path={AppRoute.Macros}     component={Macros}/>
                   <Route exact path={AppRoute.Octoprint}  component={Octoprint}/>
+                  <Route exact path={AppRoute.Marlin}     component={Marlin}/>
                 </Switch>
 
                 {this.renderSettings(background)}

@@ -23,11 +23,16 @@ export class UserDefaults {
   }
 
   get(key:string, fallback:UserDefaultValueType = null):UserDefaultValueType {
-    return this.store.get(key, fallback)
+    return JSON.parse(
+      this.store.get(key, fallback)
+    )
   }
 
-  set(key:string, value:any) {
-    this.store.set(key, value)
+  set(key:string, value:UserDefaultValueType) {
+    this.store.set(
+      key, 
+      JSON.stringify(value)
+    )
   }
 
   has(key:string) {

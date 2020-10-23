@@ -38,13 +38,7 @@ interface Props {
 }
 
 export default class extends React.Component<Props> {
-  browser = dnssd.Browser(dnssd.tcp('octoprint'))
-    // .on('serviceUp', service => 
-    //   this.setState({...this.state,
-    //     services: this.state.services.concat([service.host])
-    //   })
-    // )
-    .start()
+  browser = dnssd.Browser(dnssd.tcp('octoprint')).start()
 
   state = {
     requestingToken: false,

@@ -20,7 +20,8 @@ import {
 
 import Icon, {IconComponent} from '../../icon'
 
-import Octologo from '../../images/octoprint.png'
+import Octologo   from '../../images/octoprint.png'
+import MarlinLogo from '../../images/marlin.png'
 
 class Nav extends Component {
   options = [
@@ -66,6 +67,20 @@ class Nav extends Component {
 
     )
   }
+  
+  renderMarlin() {
+    return (
+      <NavLink
+        className="option"
+        activeClassName="current"
+        to='/marlin'
+        exact
+    >
+      <img src={MarlinLogo} width={32}/>
+    </NavLink>
+
+    )
+  }
 
   renderDivider() {
     return (
@@ -91,8 +106,13 @@ class Nav extends Component {
           />
         )}
 
+
         <Spacer/>
 
+        {this.renderDivider()}
+        <br/>
+        
+        {this.renderMarlin()}
         {this.renderOctoprint()}
 
         <br/>

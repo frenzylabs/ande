@@ -34,6 +34,10 @@ release: rebuild build_ui
 package: deps rebuild build_ui
 	@electron-builder .
 
+tag:
+	@git tag v${VERSION} \
+	&& git push --tags
+	
 dist: package
 	@git add . \
 	&& git commit -am "Release of version ${VERSION}" \

@@ -8,7 +8,6 @@
 
 import {languages} from 'monaco-editor'
 
-
 export const id = 'gcodes'
 
 languages.register({id})
