@@ -1,0 +1,20 @@
+//
+//  _command_input.scss
+//  hum
+// 
+//  Created by Wess Cope (me@wess.io) on 05/19/20
+//  Copyright 2020 Wess Cope
+//
+
+.command-input {
+  flex: 1;
+
+  .command-field {
+    border: none;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 0 !important;
+    }
+  }
+}

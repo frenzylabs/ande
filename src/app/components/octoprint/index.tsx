@@ -126,17 +126,23 @@ class Octoprint extends Component {
 
         style={{
           position: 'absolute',
-          padding: 0,
-          height: '100%'
+          padding:  0,
+          margin:   0,
+          top: '40px',
+          right: 0,
+          bottom: 0,
+          left: 0
         }}>
         <webview 
           src={`http://${data.location || data['address']}`}
           style={{
-            margin: 0,
-            width: '100%',
-            height: '100%',
+            margin:   0,
+            padding:  0,
+            width:    '100%',
+            height:   '100%',
           }}
-        ></webview>
+        >
+        </webview>
       </Tabs.TabPane>
     )
   }
@@ -174,7 +180,8 @@ class Octoprint extends Component {
         onEdit={this.editHandler}
         style={{
           position: 'relative',
-          height:   '100%'
+          height:   '100%',
+          padding: 0
         }}
       >
         {this.state.data.map(this.renderPane)}

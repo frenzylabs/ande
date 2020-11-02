@@ -1,0 +1,71 @@
+//
+//  _buffer.scss
+//  hum
+// 
+//  Created by Wess Cope (me@wess.io) on 05/19/20
+//  Copyright 2020 Wess Cope
+//
+
+.buffer {
+  flex: 1;
+  display:flex;
+  
+  &.is-console {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .output {
+    $text-color:      rgba(0, 0, 0, 0.6);
+    $even-background: rgba(0, 0, 0, 0.014);
+    $odd-background:  rgba(255, 255, 255, 1);
+    
+    flex:           1 1 auto;
+    display:        flex;
+    flex-direction: column;
+    width:          0;
+    min-width:      100%;
+    overflow:       scroll;
+    height:         0px;
+    min-height:     100%;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      width: fit-content;
+      min-width: 100%;
+
+      li {
+        background: $even-background;
+        color: $text-color;
+        padding: 8px 16px;
+        
+        pre {
+          margin: 0;
+          padding: 0;
+          width: fit-content;
+        }
+        
+        &.is-console {
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        &:nth-child(odd) {
+          background: $odd-background;
+
+          &.is-console {
+            background: rgba(0, 0, 0, 0.06);
+          }
+        }
+
+        &.empty {
+          color: rgba(0, 0, 0, 0.4);
+
+          &.is-console {
+            color: rgba(255, 255, 255, 0.2);
+          }
+        }
+      }
+    }
+  }
+}
