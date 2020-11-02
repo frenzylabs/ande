@@ -88,10 +88,10 @@ class Toolbar extends Component {
       </Col>
     )
   }
-
+  
   render() {
     return (
-      <nav id="toolbar">
+      <nav id="toolbar" style={{background: '#f6f6f6'}}>
         <div className="panel">
           <h1>Ande <span>{app.getVersion()}</span></h1>
         </div>

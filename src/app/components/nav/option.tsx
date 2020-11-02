@@ -12,6 +12,10 @@ import {
   NavLink
 } from 'react-router-dom'
 
+import {
+  Row,
+  Col
+} from 'antd'
 
 import Icon, {IconComponent} from '../../icon'
 
@@ -45,14 +49,18 @@ export default class extends React.Component<Props> {
 
   render() {
     return (
-      <NavLink
-        className="option"
-        activeClassName="current"
-        to={this.props.path}
-        exact
-      >
-        {this.renderIcon()}
-      </NavLink>
+      <Row style={{width: '100%'}}>
+        <Col flex={1}>
+          <NavLink
+            className="option"
+            activeClassName="current"
+            to={this.props.path}
+            exact
+          >
+            {this.renderIcon()}
+          </NavLink>
+        </Col>
+      </Row>
     )
   }
 }

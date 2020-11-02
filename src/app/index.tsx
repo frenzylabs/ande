@@ -18,7 +18,12 @@ import {
   withRouter
 } from 'react-router-dom'
 
-import {notification} from 'antd'
+import {
+  Row,
+  Col,
+  Layout,
+  notification
+} from 'antd'
 
 import {
   Toolbar,
@@ -74,6 +79,25 @@ class App extends React.Component<any> {
       <Route exact path={AppRoute.Settings} component={Settings}/>
     )
   }
+
+  renderTerminal() {
+    return (
+      <>
+        <Toolbar/>
+        <Terminal/>
+      </>
+    )
+  }
+
+  renderMacros() {
+    return (
+      <>
+        <Toolbar/>
+        <Macros/>
+      </>
+    )
+  }
+
   render() {
     const location    = this.props.location
     const background  = location.state && location.state.background
@@ -82,21 +106,22 @@ class App extends React.Component<any> {
       <Provider store={Store}>
         <Menu>
           <Connection>
-            <main>
-
-              <Toolbar/>
-              <section id="main-content">
+            <Row style={{width: '100%', height: '100%'}}>
+              <Col>
                 <Nav/>
-                <Switch location={background || location}>
-                  <Route exact path={AppRoute.Root}       component={Terminal}/>
-                  <Route exact path={AppRoute.Macros}     component={Macros}/>
-                  <Route exact path={AppRoute.Octoprint}  component={Octoprint}/>
-                </Switch>
+              </Col>
+              <Col flex={1}>
+                <Layout style={{width: '100%', height: '100%'}}>
+                  <Switch location={background || location}>
+                    <Route exact path={AppRoute.Root}       render={this.renderTerminal}/>
+                    <Route exact path={AppRoute.Macros}     render={this.renderMacros}/>
+                    <Route exact path={AppRoute.Octoprint}  component={Octoprint}/>
+                  </Switch>
+                </Layout>
+              </Col>
+            </Row>
 
-                {this.renderSettings(background)}
-              </section>
-
-            </main>
+            {this.renderSettings(background)}
           </Connection>
         </Menu>
       </Provider>

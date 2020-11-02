@@ -1,0 +1,226 @@
+//
+//  controls.scss
+//  boilerplate
+// 
+//  Created by Wess Cope (me@wess.io) on 05/06/20
+//  Copyright 2020 Wess Cope
+//
+
+#controls {
+  background: #eaeaea;
+  display:flex;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+
+  .controls-title {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+  }
+
+  .horizontal-divide {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.2);
+    margin: 20px 16px;
+  }
+
+  button {
+    border: none;
+    background: none; 
+  }
+
+  #dim-move {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 22px 10px 12px;
+
+    .divider {
+      background: rgba(0, 0, 0, 0.1);
+      width: 1px;
+    }
+  }
+
+  #directional {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+
+    .control-row {
+      display:flex;
+      flex-direction: row;
+      align-items: center;
+      justify-items: center;
+      justify-content: center;
+
+      .control {
+        align-self: center;
+        justify-self: center;
+      }
+
+      &.middle-row {
+        .control {
+          $margin-offset: 6px;
+
+          &:first-child {
+            margin-right: $margin-offset;
+          }
+
+          &:last-child {
+            margin-left: $margin-offset;
+          }
+        }
+      }
+    }
+  }
+
+  #z {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 24px;
+
+    .control {
+      &:first-child {
+        margin-bottom: 6px;
+      }
+
+      &:last-child {
+        margin-top: 6px;
+      }
+    }
+  }
+
+  #scale-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    padding: 10px 0;
+  }
+
+  #temps {
+    padding: 0 20px;
+
+    .temp-row {
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+      box-sizing: border-box;
+      align-items: center;
+
+      &:first-child {
+        margin-bottom: 20px;
+      }
+
+      .temp-label {
+        flex: 1;
+        display:flex;
+        flex-direction: column;
+        align-self: center;
+        justify-self: center;
+
+        h4 {
+          margin: 0;
+          padding: 0;
+          line-height: 100%;
+        }
+
+        p {
+          margin: 0;
+          padding: 0;
+          font-size: 12px;
+        }
+      }
+
+      .temp-input {
+        display: flex;
+        flex-direction: row;
+        width: 140px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      
+        input {
+          box-shadow: none !important;
+          outline: none !important;
+
+          &:focus {
+            outline: none !important;
+            box-shadow: none !important;
+          }  
+        }
+      }
+
+      .temp-col {
+        margin: 0;
+        padding: 0;
+      }
+      
+    }
+
+    .temp-steps {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+
+      padding-bottom: 2px;
+
+      a {
+        display: inline-flex;
+        
+        &:first-child {
+          margin-bottom: 1px;
+        }
+
+        &:last-child {
+          margin-top: 1px;
+        }
+      }
+
+      .step-dir {
+        width: 14px;
+        height: 14px;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  .part-controls {
+    margin-top: 10px;
+    padding: 0 20px;
+
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+
+    .part-label {
+      flex: 1;
+      font-size: 22px;
+    }
+
+    .part-control {
+      button {
+        $green: #259b24;
+
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        border-radius: 0;
+        background: #fff;
+        color: rgba(0, 0, 0, 0.4);
+
+        &:active {
+          background: $green;
+          color: #fff;
+        }
+
+        &:first-child {
+          border-right: none;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+        }
+
+        &:last-child {
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+        }
+      }
+    }
+  }
+}

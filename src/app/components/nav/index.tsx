@@ -13,10 +13,16 @@ import Component  from '../../types/component'
 import Spacer     from '../spacer'
 import Option     from './option'
 
+
 import {
   NavLink,
   withRouter
 } from 'react-router-dom'
+
+import {
+  Row,
+  Col
+} from 'antd'
 
 import Icon, {IconComponent} from '../../icon'
 
@@ -55,15 +61,18 @@ class Nav extends Component {
 
   renderOctoprint() {
     return (
-      <NavLink
-        className="option"
-        activeClassName="current"
-        to='/octoprint'
-        exact
-    >
-      <img src={Octologo} width={32}/>
-    </NavLink>
-
+      <Row style={{width: '100%'}}>
+        <Col flex={1}>
+          <NavLink
+            className="option"
+            activeClassName="current"
+            to='/octoprint'
+            exact
+        >
+            <img src={Octologo} width={24} style={{margin: 0, padding: 0}}/>
+          </NavLink>
+        </Col>
+        </Row>
     )
   }
 
@@ -71,14 +80,13 @@ class Nav extends Component {
     return (
       <div style={{
         height: '2px', 
-        width: '50px',  
+        width: '100%',
         borderTop: '1px solid rgba(0, 0, 0, 1)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-        margin: '0 auto',
       }}/>
     )
   }
-
+  
   render() {
     return (
       <nav id="main-nav">
@@ -96,10 +104,6 @@ class Nav extends Component {
         {this.renderOctoprint()}
 
         <br/>
-        {this.renderDivider()}
-        <br/>
-
-        <p style={{fontSize: '8', textAlign: 'center', color: 'rgba(255, 255, 255, 0.2)'}}>{app.getVersion()}</p>
       </nav>
     )
   }
